@@ -8,13 +8,13 @@ function RouterConfig({ history,app }){
   return (
     <ConnectedRouter history={history}>
        <Switch>
-          {
-            routes.map(({path,name,...dynamics})=>{
-              return (
-                <Route path={path} key={name} exact component={dynamic({app,...dynamics})} />
-              )
-            })
-          }
+            {
+              routes.map(({path,name,...dynamics})=>{
+                return (
+                  <Route path={path} key={name} exact component={dynamic({app,...dynamics})} />
+                )
+              })
+            }
           <Route path="/404" component={NotFound} />
           <Redirect to='/404'></Redirect>
        </Switch>

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import {connect} from 'dva';
 import {Form,Input,Button} from 'antd';
 import styles from './index.less';
-
+import Header from './../../layout/headerOne';
 const FormItem = Form.Item;
 
 class CheckLogin extends React.Component{
@@ -27,6 +27,7 @@ class CheckLogin extends React.Component{
         const formItemLayout = {labelCol: {xs: {span: 24},sm: {span: 6}},wrapperCol: {xs: {span: 24},sm: {span: 12}} };
         return(
             <Fragment>
+                <Header />
                 <div className={styles.container}>
                    <div className={styles.wrapper}>
                      <div className={styles.content}></div>
@@ -41,6 +42,7 @@ class CheckLogin extends React.Component{
                             key='account'
                             {...formItemLayout}
                         >
+
                             {getFieldDecorator('zh', {
                                 rules: [{ required: true, message: '请输入账户!' }],
                             })(

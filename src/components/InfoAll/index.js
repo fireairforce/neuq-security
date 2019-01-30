@@ -3,6 +3,7 @@ import styles from './index.less';
 import {Form,Button,Table,Select} from 'antd'
 import {connect} from 'dva';
 import columns from '../../utils/header';
+import HeaderTwo from '../../layout/headerTwo';
 const FormItem = Form.Item;
 const Option = Select.Option;
 let value1 = [],value2=[];
@@ -44,6 +45,7 @@ class InfoAll extends React.Component{
         const {statics} = this.state;
         return(
             <Fragment>
+                 <HeaderTwo />
                 <div className={styles.wrapper}>
                    <h1 className={styles.header1}>东大安保</h1>
                    <h1 className={styles.header2}>信息汇总</h1>

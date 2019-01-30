@@ -3,6 +3,7 @@ import {connect} from 'dva';
 import styles from './index.less';
 import columns from '../../utils/header';
 import {Form,Select,Button,Table,Modal} from 'antd';
+import HeaderTwo from '../../layout/headerTwo';
 const FormItem = Form.Item;
 const Option = Select.Option;
 let value1=[],value2=[],a=[];
@@ -112,43 +113,45 @@ class InfoCheck extends React.Component{
          const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
-          };      
+          };   
+          console.log(statics);   
         return(
             <Fragment>
+                <HeaderTwo />
                <div className={styles.wrapper}>
-                  <h1 className={styles.header1}>东大安保</h1>
-                  <h1 className={styles.header2}>信息审核</h1>
-                  <div className={styles.content2}>
-                      <Form layout="inline" >
-                        <div className={styles.content3}>
-                            <FormItem>
-                                {
-                                    getFieldDecorator('city_id')(
-                                        <Select
-                                            style={{width:100}}
-                                            placeholder="审核信息"
-                                        >
-                                            <Option value="0" onClick={this.getFail}>未通过审核</Option>
-                                            <Option value="1" onClick={this.getPass}>已通过审核</Option>
-                                        </Select>
-                                    )
-                                }
-                            </FormItem>
-                            </div>
-                            <div className={styles.content4}>
-                                <Button className={styles.button1} onClick={this.passChecked}>确认通过</Button>
-                                <Button className={styles.button2} onClick={this.rejectChecked}>拒绝申请</Button>
-                            </div>
-                        </Form> 
-                    </div>
-                    <div className={styles.content1}>
-                      <Table 
-                        bordered
-                        rowSelection={rowSelection}
-                        columns={columns}
-                        dataSource={statics}
-                        />
-                    </div>
+                    <h1 className={styles.header1}>东大安保</h1>
+                    <h1 className={styles.header2}>信息审核</h1>
+                    <div className={styles.content2}>
+                        <Form layout="inline" >
+                                <div className={styles.content3}>
+                                    <FormItem>
+                                        {
+                                            getFieldDecorator('city_id')(
+                                                <Select
+                                                    style={{width:100}}
+                                                    placeholder="审核信息"
+                                                >
+                                                    <Option value="0" onClick={this.getFail}>未通过审核</Option>
+                                                    <Option value="1" onClick={this.getPass}>已通过审核</Option>
+                                                </Select>
+                                            )
+                                        }
+                                    </FormItem>
+                                </div>
+                                <div className={styles.content4}>
+                                    <Button className={styles.button1} onClick={this.passChecked}>确认通过</Button>
+                                    <Button className={styles.button2} onClick={this.rejectChecked}>拒绝申请</Button>
+                                </div>
+                            </Form> 
+                        </div>
+                        <div className={styles.content1}>
+                        <Table 
+                            bordered
+                            rowSelection={rowSelection}
+                            columns={columns}
+                            dataSource={statics}
+                            />
+                        </div>
                </div>
             </Fragment>
         )

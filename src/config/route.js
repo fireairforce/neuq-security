@@ -17,8 +17,8 @@ const routes = [
     },{
       path:'/infoall',
       name:'infoall',
-      models: () =>[import('./../models/shyg')],
-      component: () => import('./../components/InfoCheck'),
+      models: () =>[import('./../models/xxhz')],
+      component: () => import('./../components/InfoAll'),
     }
   ]
 export default routes

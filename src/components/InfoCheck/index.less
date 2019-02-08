@@ -4,4 +4,49 @@
     background: url(./../../assets/bgc-check.png);
     background-size: cover;
     position: relative;
+    .header2{
+        position: absolute;
+        left: 50%;
+        font-size: 36px;
+        font-weight: bold;
+        top: 5%;
+    }
+    .content2{
+        position: absolute;
+        top: 12%;
+        left: 5vw;
+        width: 90vw;
+        .content3{
+           float: left;
+           button{
+               margin-right: 15px;
+               margin-left: 20px;
+               height: 40px;
+               margin-top: 3px;
+           }
+        }
+        .content4{
+           float: right;
+           button{
+              margin-left: 15px;
+              font-size: 18px;
+              height: 40px;
+              border-radius: 10px;
+           }
+        }
+    }
+    .content1{
+        position: absolute;
+        top: 18%;
+        width: 90vw;
+        left: 5vw;
+    }
+}
+:global{
+    .ant-select-selection--single{
+        height: 39px;
+    }
+    .ant-select-selection__placeholder, .ant-select-search__field__placeholder{
+        top:60%;
+    }
 }

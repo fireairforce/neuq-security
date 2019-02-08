@@ -119,11 +119,11 @@ class InfoCheck extends React.Component{
             <Fragment>
                 <HeaderTwo />
                <div className={styles.wrapper}>
-                    <h1 className={styles.header1}>东大安保</h1>
                     <h1 className={styles.header2}>信息审核</h1>
                     <div className={styles.content2}>
                         <Form layout="inline" >
                                 <div className={styles.content3}>
+                                   <Button>批量审核</Button>
                                     <FormItem>
                                         {
                                             getFieldDecorator('city_id')(
@@ -139,8 +139,8 @@ class InfoCheck extends React.Component{
                                     </FormItem>
                                 </div>
                                 <div className={styles.content4}>
-                                    <Button className={styles.button1} onClick={this.passChecked}>确认通过</Button>
-                                    <Button className={styles.button2} onClick={this.rejectChecked}>拒绝申请</Button>
+                                    <Button onClick={this.passChecked} type="primary">确认通过</Button>
+                                    <Button onClick={this.rejectChecked} type="primary">拒绝申请</Button>
                                 </div>
                             </Form> 
                         </div>

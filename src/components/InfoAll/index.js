@@ -47,7 +47,6 @@ class InfoAll extends React.Component{
             <Fragment>
                  <HeaderTwo />
                 <div className={styles.wrapper}>
-                   <h1 className={styles.header1}>东大安保</h1>
                    <h1 className={styles.header2}>信息汇总</h1>
                    <div className={styles.content2}>
                       <Form layout="inline" >
@@ -89,8 +88,7 @@ class InfoAll extends React.Component{
                             </FormItem>   
                             </div>
                             <div className={styles.content4}>
-                                <Button className={styles.button1} onClick={()=>{alert('chynb!')}}>选择制证</Button>
-                                <Button className={styles.button2}>生成二维码</Button>
+                                <Button>导出二维码</Button>
                             </div>
                         </Form>
                     </div>
@@ -108,3 +106,4 @@ class InfoAll extends React.Component{
     }
 }
 export default connect(({ xxhz }) => ({ xxhz }))(Form.create()(InfoAll));
+

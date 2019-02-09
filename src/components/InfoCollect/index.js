@@ -37,8 +37,15 @@ class InfoCollect extends React.Component{
                 if(value.code==="0"){
                     this.setState({submitted:true})
                     Modal.success({
-                        title: '提交成功',
-                        content: '您的申请信息已提交到您所在学院的管理员审核',
+                        title: '申请成功',
+                        content: (
+                            <div>
+                             <p style={{textAlign:"center"}}><img src={require('./../../assets/message.png')} style={{margin:'0 auto'}} alt=""/></p>     
+                               <p style={{textAlign:"center" ,fontSize:'20px'}}>请等待管理员审核...</p>
+                              <p style={{textAlign:"center" ,fontSize:'20px'}}>预计会在三个工作日左右收到出入证</p>
+                            </div>
+                          ),
+                        // content: '申请成功!请等待管理员审核...预计会在三个工作日左右收到出入证',
                     })
                 }
             }

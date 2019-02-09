@@ -24,22 +24,13 @@ class InfoCheck extends React.Component{
             selectedData:a
         });
       }
-    //  获取到通过审核和没有通过审核的数据
-    getpassdata = () =>{
-         const {dispatch} = this.props;
-         dispatch({
-            type:'shyg/getpassList',
-            payload:''
-         })
-    }
-    getfaildata = () =>{
+      getdata = (params) => {
         const {dispatch} = this.props;
         dispatch({
-            type:'shyg/getfailList',
+            type:`shyg/${params}`,
             payload:''
         })
-    }
-   
+      }
     getFail = () =>{
         a=[];
         this.setState({
@@ -61,14 +52,20 @@ class InfoCheck extends React.Component{
     }
     
     componentDidMount(){
-        this.getpassdata();
-        this.getfaildata();
+        this.getdata('getpassList');
+        this.getdata('getfailList');
         setTimeout(()=>{
             value1 = this.props.shyg.value?this.props.shyg.value.data:""; // 通过的数据
             value2 = this.props.shyg.content?this.props.shyg.content.data:"";  //没有通过的数据
+            value1.sort(function(a,b){
+                return b.id - a.id;  //对里面的数据进行一个时间的从最新到后面的排序
+             })
+            value2.sort(function(a,b){
+                return b.id - a.id;  //对里面的数据进行一个时间的从最新到后面的排序
+             })
             let value3 = []; 
             if(value1!==""&&value2!==""){
-                value3 = value1.concat(value2); //所有的数据
+                value3 = value2.concat(value1); //把没通过的数据放在通过的数据的前面
                 let trans = [];
                 for(var i=0;i<value1.length;i++){
                    trans[i]=i;
@@ -114,7 +111,9 @@ class InfoCheck extends React.Component{
             selectedRowKeys,
             onChange: this.onSelectChange,
           };   
-          console.log(statics);   
+          console.log(value1);
+          console.log(value2);
+        //   console.log(statics);   
         return(
             <Fragment>
                 <HeaderTwo />

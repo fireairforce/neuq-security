@@ -6,12 +6,12 @@ import columns from '../../utils/header';
 import HeaderTwo from '../../layout/headerTwo';
 const FormItem = Form.Item;
 const Option = Select.Option;
-let value1 = [],value2=[];
+let value1 = [];
 class InfoAll extends React.Component{
     state={
         statics:[]
     }
-    getdata = (params) =>{
+    getdata = (params) => {
        const {dispatch} = this.props;
        dispatch({
            type:`xxhz/${params}`,
@@ -21,18 +21,18 @@ class InfoAll extends React.Component{
     
     componentDidMount(){
         this.getdata("getpassList");
-        this.getdata("getfailList");
         setTimeout(()=>{
             const {xxhz} = this.props;
-            if(typeof(xxhz.value)!=="undefined" && typeof(xxhz.content)!=="undefined"){
+            if(typeof(xxhz.value)!=="undefined"){
                 value1 = xxhz.value.data;
-                value2 = xxhz.content.data;
              }
-             if(value1.length&&value2.length){
-                const value3 = value1.concat(value2);
-                this.setState({
-                    statics:value3
-                })
+             if(value1.length){
+                 value1.sort(function(a,b){
+                    return b.id - a.id;  //对里面的数据进行一个时间的从最新到后面的排序
+                 })
+                 this.setState({
+                     statics:value1
+                 })
              }
         },1000)
         
@@ -43,9 +43,10 @@ class InfoAll extends React.Component{
           };
         const {getFieldDecorator} = this.props.form;
         const {statics} = this.state;
+        // console.log(value1);
         return(
             <Fragment>
-                 <HeaderTwo />
+                <HeaderTwo />
                 <div className={styles.wrapper}>
                    <h1 className={styles.header2}>信息汇总</h1>
                    <div className={styles.content2}>

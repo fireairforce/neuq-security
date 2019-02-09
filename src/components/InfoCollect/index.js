@@ -45,7 +45,6 @@ class InfoCollect extends React.Component{
                               <p style={{textAlign:"center" ,fontSize:'20px'}}>预计会在三个工作日左右收到出入证</p>
                             </div>
                           ),
-                        // content: '申请成功!请等待管理员审核...预计会在三个工作日左右收到出入证',
                     })
                 }
             }

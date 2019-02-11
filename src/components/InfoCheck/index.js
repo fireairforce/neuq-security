@@ -87,6 +87,9 @@ class InfoCheck extends React.Component{
             })
             return;
         }
+        setTimeout(()=>{
+          window.location.reload();
+        },2000)
     }
     //批量选择操作
    selectmore = () =>{

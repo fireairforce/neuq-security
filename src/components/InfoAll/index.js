@@ -55,7 +55,7 @@ class InfoAll extends React.Component{
     }
     // 对数据的选择函数
     onSelectChange = (selectedRowKeys,selectedRows) =>{
-        let a = new Array();
+        let a = [];
         while(selectedRows.length){
           a.push(selectedRows.pop());
         }

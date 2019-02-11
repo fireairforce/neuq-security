@@ -38,3 +38,10 @@ export const passReject = (data) => request({
     token:true,
     data,    
 })
+// 获得制证的二维码
+export const handleCode = (data) => request({
+    url:API.getCode,
+    method:'post',
+    token:true,
+    data
+})

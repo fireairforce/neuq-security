@@ -88,6 +88,7 @@ class InfoCheck extends React.Component{
             return;
         }
     }
+    //批量选择操作
    selectmore = () =>{
        
    }
@@ -130,7 +131,7 @@ class InfoCheck extends React.Component{
         //   console.log(value2);  // value2是没有通过审核的数据
         return(
             <Fragment>
-                <HeaderTwo />
+               <HeaderTwo />
                <div className={styles.wrapper}>
                     <h1 className={styles.header2}>信息审核</h1>
                     <div className={styles.content2}>

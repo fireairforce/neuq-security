@@ -9,8 +9,10 @@ const Option = Select.Option;
 let value1 = [];
 class InfoAll extends React.Component{
     state={
-        statics:[]
-    }
+        statics:[],
+        selectedRowKeys:[],
+        selectedData:[],
+    };
     getdata = (params) => {
        const {dispatch} = this.props;
        dispatch({
@@ -18,7 +20,21 @@ class InfoAll extends React.Component{
            payload:''
         })
     }
-    
+    getCode = () =>{
+        let item = this.state.selectedData;
+        const {dispatch} = this.props;
+        let ids =[];
+        if(item.length){
+            for(let i in item){
+                ids.push(item[i].id);
+            }
+            const pass = {ids};
+            dispatch({
+                type:'xxhz/handleCode',
+                payload:pass
+            })
+        }
+    }
     componentDidMount(){
         this.getdata("getpassList");
         setTimeout(()=>{
@@ -37,13 +53,28 @@ class InfoAll extends React.Component{
         },1000)
         
     }
+    // 对数据的选择函数
+    onSelectChange = (selectedRowKeys,selectedRows) =>{
+        let a = new Array();
+        while(selectedRows.length){
+          a.push(selectedRows.pop());
+        }
+        console.log(a);
+        this.setState({
+            selectedRowKeys,
+            selectedData:a
+        })
+    }
     render(){
         const pagination = {
             pageSize: 10,
           };
         const {getFieldDecorator} = this.props.form;
-        const {statics} = this.state;
-        // console.log(value1);
+        const {statics,selectedRowKeys} = this.state;
+        const rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange,
+          };
         return(
             <Fragment>
                 <HeaderTwo />
@@ -89,7 +120,7 @@ class InfoAll extends React.Component{
                             </FormItem>   
                             </div>
                             <div className={styles.content4}>
-                                <Button>导出二维码</Button>
+                                <Button onClick={this.getCode}>导出二维码</Button>
                             </div>
                         </Form>
                     </div>
@@ -99,6 +130,7 @@ class InfoAll extends React.Component{
                         columns={columns}
                         dataSource={statics}
                         pagination={pagination}
+                        rowSelection={rowSelection}
                       />
                     </div>
                 </div>

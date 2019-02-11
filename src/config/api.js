@@ -12,5 +12,8 @@ export default {
     passedList: '/pass/getpasses/999/0',
     
     // app应用
-    passSearch: 'pass/search'
+    passSearch: 'pass/search',
+
+    //获取二维码
+    getCode: '/pass/getQRcode'
 }

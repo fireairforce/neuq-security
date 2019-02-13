@@ -10,7 +10,7 @@ const fetch = options => {
   const myAxios = axios.create(axiosOptions)
   let token1 = window.localStorage.token?window.localStorage.token:"";
   headers = token1 ? {...headers,token:token1}:headers
-  
+  // console.log(token1);
   switch (method.toLowerCase()) {
     case 'get':
       return myAxios.get(url, {

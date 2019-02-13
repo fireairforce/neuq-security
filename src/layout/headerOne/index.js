@@ -5,7 +5,7 @@ class HeaderOne extends React.Component{
         return(
             <div className={styles.wrapper}>
                <div className={styles.logo}>
-                   <img src={require('./../../assets/school_word.png')} alt="logo"/>
+                   <img src="http://wdlj.zoomdong.xin/school_word.png" alt="logo"/>
                </div>
             </div>
         )

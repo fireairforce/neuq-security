@@ -6,7 +6,7 @@ import {Form,Select,Button,Table,Modal} from 'antd';
 import HeaderTwo from '../../layout/headerTwo';
 const FormItem = Form.Item;
 const Option = Select.Option;
-let value1=[],value2=[],a=[];
+let value1=[],value2=[],a=[],value3=[];
 class InfoCheck extends React.Component{
     // 把已经通过审核的数据搞的不能选择
     state={
@@ -28,11 +28,11 @@ class InfoCheck extends React.Component{
             selectedData:a
         });
       }
-    //   getcheckedbox = (record) => ({
-    //       disabled: value1.map((item,index)=>{
-    //           return record.id===item.id
-    //       })
-    //   })
+        //   getcheckedbox = (record) => ({
+        //       disabled: value1.map((item,index)=>{
+        //           return record.id===item.id
+        //       })
+        //   })
 
       // 获取所有申请人的数据
       getdata = (params) => {
@@ -42,7 +42,7 @@ class InfoCheck extends React.Component{
             payload:''
         })
       }
-
+   // 获取到那些没有通过审核的数据放在列表里面
     getFail = () =>{
           a=[];
           this.setState({
@@ -50,7 +50,7 @@ class InfoCheck extends React.Component{
               statics:value2
            })        
     }
-
+   // 获取那些通过审核的数据放在列表里面
     getPass = () =>{
         a=[];
         let trans2 = [];
@@ -89,19 +89,21 @@ class InfoCheck extends React.Component{
         }
         setTimeout(()=>{
           window.location.reload();
-        },2000)
+        },1000)
     }
-    //批量选择操作
+    //批量选择操作,可以考虑对这边的
    selectmore = () =>{
-       
+       alert('还没开发，敬请期待')
    }
+   
    componentDidMount(){
         this.getdata('getpassList');
         this.getdata('getfailList');
         setTimeout(()=>{
-            value1 = this.props.shyg.value?this.props.shyg.value.data:""; // 通过的数据
-            value2 = this.props.shyg.content?this.props.shyg.content.data:"";  //没有通过的数据
-            let value3 = []; 
+            value1 = this.props.shyg.value?this.props.shyg.value.data:[]; // 通过的数据
+            value2 = this.props.shyg.content?this.props.shyg.content.data:[];  //没有通过的数据
+            console.log(value1);
+            console.log(value2); 
             if(value1.length&&value2.length){
                 value1.sort(function(a,b){
                     return b.id-a.id; // 对通过的数据按照时间的近到远的排序
@@ -110,28 +112,24 @@ class InfoCheck extends React.Component{
                     return b.id-a.id;　// 对还没有审核的数据按照近到远的排序
                 })
                 value3 = value2.concat(value1); //把没通过的数据放在通过的数据的前面
-                // let trans = [];
-                // for(var i=0;i<value1.length;i++){
-                //    trans[i]=i;
-                // } 
-                this.setState({
+            }
+            this.setState({
                 statics:value3,
-                //    selectedRowKeys: []
-                })  
-            } 
-        },2000)
+            }) 
+            console.log(this.state.statics);
+        },500)
+      
     }
     render(){ 
-         const {getFieldDecorator} = this.props.form; 
-         const {selectedRowKeys,statics} = this.state;
-         const rowSelection = {
+        const {getFieldDecorator} = this.props.form; 
+        const {selectedRowKeys,statics} = this.state;
+        const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
-            getCheckboxProps: this.getcheckedbox //禁止一些选择
-          };
-             console.log(selectedRowKeys);
-        //   console.log(value1); // value1指的是通过了审核的数据
-        //   console.log(value2);  // value2是没有通过审核的数据
+            getCheckboxProps: this.getcheckedbox //禁止一些选择，还没考虑使用
+        };
+        console.log(value1); // value1指的是通过了审核的数据
+        console.log(value2);  // value2是没有通过审核的数据
         return(
             <Fragment>
                <HeaderTwo />

@@ -41,7 +41,7 @@ class InfoCollect extends React.Component{
                         title: '申请成功',
                         content: (
                             <div>
-                             <p style={{textAlign:"center"}}><img src={require('./../../assets/message.png')} style={{margin:'0 auto'}} alt=""/></p>     
+                             <p style={{textAlign:"center"}}><img src="http://wdlj.zoomdong.xin/message.png" style={{margin:'0 auto'}} alt=""/></p>     
                                <p style={{textAlign:"center" ,fontSize:'20px'}}>请等待管理员审核...</p>
                               <p style={{textAlign:"center" ,fontSize:'18px'}}>预计会在三个工作日左右收到出入证</p>
                             </div>

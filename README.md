@@ -5,7 +5,8 @@
 
 ## 后台API
 http://leaf.marklux.cn/api/doc/114
-
+制证的接口:
+http://neuqsecurity.lyzwhh.top/pass/getQRcode
 
 - 让信息通过的信息禁选  
 

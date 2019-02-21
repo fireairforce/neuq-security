@@ -15,5 +15,5 @@ export default {
     passSearch: 'pass/search',
 
     //获取二维码
-    getCode: '/pass/getQRcode'
+    getCode: 'pass/getQRcode'
 }

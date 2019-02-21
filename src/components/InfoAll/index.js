@@ -31,6 +31,7 @@ class InfoAll extends React.Component{
                 ids.push(item[i].id);
             }
             const pass = {ids};
+            console.log(pass);
             dispatch({
                 type:'xxhz/handleCode',
                 payload:pass
@@ -51,7 +52,7 @@ class InfoAll extends React.Component{
             this.getdata("getpassList");
             setTimeout(()=>{
                 const {xxhz} = this.props;
-                if(xxhz&&xxhz.value.code==='0'){
+                if(xxhz.value&&xxhz.value.code==='0'){
                   value1 = xxhz.value.data;
                   if(value1.length){
                     value1.sort(function(a,b){
@@ -64,7 +65,7 @@ class InfoAll extends React.Component{
               }else{
                 this.props.history.push(`/checklogin`); // 如果token过期了的话或者没有token直接让他跳转回去登录界面
               }
-            },1000)
+            },3000)
       }
       Options.map(v=>(
           value2[v.type]=v.value

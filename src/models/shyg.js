@@ -8,7 +8,7 @@ export default {
         *getpassList({payload},{call,put}){
             // console.log(window.localStorage.token);
             const response = yield call(getpassList);
-            console.log(response);
+            // console.log(response);
             yield put({
                 type: 'savedata1',
                 payload: response

@@ -6,9 +6,33 @@ import verity from '../../utils/regex';
 import Options from '../../utils/options';
 import Header from './../../layout/headerOne';
 
+import axios from 'axios';
+
 const FormItem = Form.Item;
 
 class InfoCollect extends React.Component{
+    // componentDidMount(){
+    //     const ids = [146]
+    //     const data = { ids }
+    //     axios({
+    //       method:'post', 
+
+    //       url:'http://neuqsecurity.lyzwhh.top/pass/getQRcode',
+    //       data,
+    //       token:'4df9e8f1434c26f33640e952dab9a414',
+    //     }).then(res=>{
+
+    //         var blob = new Blob([res.data],{type: res.headers['content-type']});
+    //         var downloadElement = document.createElement('a');
+    //         var href = window.URL.createObjectURL(blob); //创建下载的链接
+    //         downloadElement.href = href;
+    //         downloadElement.download = 'QRCode.zip'; //下载后文件名
+    //         document.body.appendChild(downloadElement);
+    //         downloadElement.click(); //点击下载
+    //         document.body.removeChild(downloadElement); //下载完成移除元素
+    //         window.URL.revokeObjectURL(href); //释放掉blob对象
+    //     })
+    // }
     state={
         loading:false,
         submitted:false,

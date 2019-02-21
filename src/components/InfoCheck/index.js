@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import {connect} from 'dva';
 import styles from './index.less';
 import columns from '../../utils/header';
-import {Form,Select,Button,Table,Modal} from 'antd';
+import { Form,Select,Button,Table,Modal,message } from 'antd';
 import HeaderTwo from '../../layout/headerTwo';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -28,11 +28,12 @@ class InfoCheck extends React.Component{
             selectedData:a
         });
       }
-        //   getcheckedbox = (record) => ({
-        //       disabled: value1.map((item,index)=>{
-        //           return record.id===item.id
-        //       })
-        //   })
+        getcheckedbox = (record) => ({
+              disabled: value1.map(item => (
+                //   console.log(item.id),
+                 record.id===parseInt(item.id)
+              ))
+          })
 
       // 获取所有申请人的数据
       getdata = (params) => {
@@ -118,7 +119,7 @@ class InfoCheck extends React.Component{
             this.getdata('getpassList');
             this.getdata('getfailList');
         setTimeout(()=>{
-            if(this.props.shyg.content&&this.props.shyg.content.code==="0"){
+            if((this.props.shyg.content||this.props.shyg.value)&&(this.props.shyg.content.code==="0"||this.props.shyg.value.code==="0")){
                     value1 = this.props.shyg.value?this.props.shyg.value.data:[]; // 通过的数据
                     value2 = this.props.shyg.content?this.props.shyg.content.data:[];  //没有通过的数据
                     // console.log(value1);
@@ -130,16 +131,20 @@ class InfoCheck extends React.Component{
                         value2.sort((a,b)=>{
                             return b.id-a.id;　// 对还没有审核的数据按照近到远的排序
                         })
+                         // 把id换成key，避免error
                         value3 = value2.concat(value1); //把没通过的数据放在通过的数据的前面
+                        value1 = JSON.parse(JSON.stringify(value1).replace(/id/g,"key"));
+                        value2 = JSON.parse(JSON.stringify(value2).replace(/id/g,"key"));
+                        value3 = JSON.parse(JSON.stringify(value3).replace(/id/g,"key"));
                     }
                     this.setState({
                         statics:value3,
                     }) 
-            
             }else{
+                message.info('登录令牌已失效，请重新登录');
                 this.props.history.push(`/checklogin`); // 如果token过期了的话或者没有token直接让他跳转回去登录界面
             }
-        },1000)
+        },2000)
      }
     }
     render(){ 
@@ -177,7 +182,7 @@ class InfoCheck extends React.Component{
                                     </FormItem>
                                 </div>
                                 <div className={styles.content4}>
-                                    <Button onClick={()=>{this.cheched('handlepassList')}} type="primary">确认通过</Button>
+                                    <Button onClick={()=>{this.cheched('handlepassList')}} type="primary" style={{backgroundColor:'#99CC66',borderColor:'#d9d9d9'}}>确认通过</Button>
                                     <Button onClick={()=>{this.cheched('handlefailList')}} type="danger">拒绝申请</Button>
                                 </div>
                             </Form> 

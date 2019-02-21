@@ -62,6 +62,6 @@ export default async options => {
     downFile(res.data, options.filename)
     return true
   }
-  const {data} = res
+  const { data } = res
   return data
 }

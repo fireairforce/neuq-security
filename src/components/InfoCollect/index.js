@@ -25,7 +25,7 @@ class InfoCollect extends React.Component{
             phone:dh,
             relation:gx
         }
-        console.log(content);
+        // console.log(content);
         dispatch({
             type:'apply/handleApply',
             payload: content

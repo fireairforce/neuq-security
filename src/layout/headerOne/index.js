@@ -5,7 +5,7 @@ class HeaderOne extends React.Component{
         return(
             <div className={styles.wrapper}>
                <div className={styles.logo}>
-                   <img src="http://wdlj.zoomdong.xin/school_word.png" alt="logo"/>
+                   <img src="http://wdlj.zoomdong.xin/school_word.png" style={{width:'auto',height:'auto',maxWidth:'100%',maxHeight:'100%'}} alt="logo"/>
                </div>
             </div>
         )

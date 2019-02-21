@@ -18,9 +18,9 @@ class CheckLogin extends React.Component{
            type:'shdl/handleLogin',
            payload:content
         })
-        setTimeout(()=>{
-            console.log(this.props.shdl.value);
-        },1000)
+        // setTimeout(()=>{
+        //     console.log(this.props.shdl.value);
+        // },1000)
     }
     render(){
         const {getFieldDecorator} = this.props.form;

@@ -68,10 +68,11 @@ class InfoCheck extends React.Component{
     }
     cheched = (params) => {
         let item = this.state.selectedData;
-        console.log(item);
+        // console.log(item);
         const { dispatch } = this.props;
         let ids = [];
         if(item.length){
+            if(params==='')
             for(var i in item){
                 ids.push(item[i].id);
             }
@@ -97,30 +98,36 @@ class InfoCheck extends React.Component{
    }
    
    componentDidMount(){
-        this.getdata('getpassList');
-        this.getdata('getfailList');
+       if(!this.state.statics.length){ //当列表的数据为空的时候，进行一次请求，节省性能
+            this.getdata('getpassList');
+            this.getdata('getfailList');
         setTimeout(()=>{
-            value1 = this.props.shyg.value?this.props.shyg.value.data:[]; // 通过的数据
-            value2 = this.props.shyg.content?this.props.shyg.content.data:[];  //没有通过的数据
-            console.log(value1);
-            console.log(value2); 
-            if(value1.length&&value2.length){
-                value1.sort(function(a,b){
-                    return b.id-a.id; // 对通过的数据按照时间的近到远的排序
-                })
-                value2.sort(function(a,b){
-                    return b.id-a.id;　// 对还没有审核的数据按照近到远的排序
-                })
-                value3 = value2.concat(value1); //把没通过的数据放在通过的数据的前面
+            if(this.props.shyg.content&&this.props.shyg.content.code==="0"){
+                    value1 = this.props.shyg.value?this.props.shyg.value.data:[]; // 通过的数据
+                    value2 = this.props.shyg.content?this.props.shyg.content.data:[];  //没有通过的数据
+                    // console.log(value1);
+                    // console.log(value2); 
+                    if(value1.length&&value2.length){
+                        value1.sort(function(a,b){
+                            return b.id-a.id; // 对通过的数据按照时间的近到远的排序
+                        })
+                        value2.sort(function(a,b){
+                            return b.id-a.id;　// 对还没有审核的数据按照近到远的排序
+                        })
+                        value3 = value2.concat(value1); //把没通过的数据放在通过的数据的前面
+                    }
+                    this.setState({
+                        statics:value3,
+                    }) 
+            
+            }else{
+                this.props.history.push(`/checklogin`); // 如果token过期了的话或者没有token直接让他跳转回去登录界面
             }
-            this.setState({
-                statics:value3,
-            }) 
-            console.log(this.state.statics);
-        },500)
-      
+        },1000)
+     }
     }
     render(){ 
+        // console.log(this.props);
         const {getFieldDecorator} = this.props.form; 
         const {selectedRowKeys,statics} = this.state;
         const rowSelection = {
@@ -128,8 +135,8 @@ class InfoCheck extends React.Component{
             onChange: this.onSelectChange,
             getCheckboxProps: this.getcheckedbox //禁止一些选择，还没考虑使用
         };
-        console.log(value1); // value1指的是通过了审核的数据
-        console.log(value2);  // value2是没有通过审核的数据
+        // console.log(value1); // value1指的是通过了审核的数据
+        // console.log(value2);  // value2是没有通过审核的数据
         return(
             <Fragment>
                <HeaderTwo />

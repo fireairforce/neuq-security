@@ -72,15 +72,34 @@ class InfoCheck extends React.Component{
         const { dispatch } = this.props;
         let ids = [];
         if(item.length){
-            if(params==='')
             for(var i in item){
                 ids.push(item[i].id);
             }
             const pass = { ids }
-            dispatch({
-                type:`shyg/${params}`,
-                payload:pass
-            })
+            if(params==='handlefailList'){
+               　Modal.confirm({
+                   title:'您确定要删除这些信息吗',
+                   content:'一旦删除便不可修改',
+                   onOk(){
+                    dispatch({
+                        type:`shyg/${params}`,
+                        payload:pass
+                    })
+                    setTimeout(()=>{
+                        window.location.href = window.location.href;
+                      },1000)
+                  }
+                })
+              
+            }else{
+                dispatch({
+                    type:`shyg/${params}`,
+                    payload:pass
+                })
+                setTimeout(()=>{
+                    window.location.href = window.location.href;
+                  },1000)
+            }      
         }else{
             Modal.info({
                 title:'提示',
@@ -88,15 +107,12 @@ class InfoCheck extends React.Component{
             })
             return;
         }
-        setTimeout(()=>{
-          window.location.reload();
-        },1000)
+       
     }
     //批量选择操作,可以考虑对这边的
    selectmore = () =>{
        alert('还没开发，敬请期待')
    }
-   
    componentDidMount(){
        if(!this.state.statics.length){ //当列表的数据为空的时候，进行一次请求，节省性能
             this.getdata('getpassList');
@@ -108,10 +124,10 @@ class InfoCheck extends React.Component{
                     // console.log(value1);
                     // console.log(value2); 
                     if(value1.length&&value2.length){
-                        value1.sort(function(a,b){
+                        value1.sort((a,b)=>{
                             return b.id-a.id; // 对通过的数据按照时间的近到远的排序
                         })
-                        value2.sort(function(a,b){
+                        value2.sort((a,b)=>{
                             return b.id-a.id;　// 对还没有审核的数据按照近到远的排序
                         })
                         value3 = value2.concat(value1); //把没通过的数据放在通过的数据的前面
@@ -162,7 +178,7 @@ class InfoCheck extends React.Component{
                                 </div>
                                 <div className={styles.content4}>
                                     <Button onClick={()=>{this.cheched('handlepassList')}} type="primary">确认通过</Button>
-                                    <Button onClick={()=>{this.cheched('handlefailList')}} type="primary">拒绝申请</Button>
+                                    <Button onClick={()=>{this.cheched('handlefailList')}} type="danger">拒绝申请</Button>
                                 </div>
                             </Form> 
                         </div>

@@ -38,8 +38,8 @@ class InfoAll extends React.Component{
         }
     }
     onChoice = (type) =>{
-        const { statics } = this.state;
-        if(statics.length){            
+        // const { statics } = this.state;
+        if(value1.length){            
             this.setState({
                 statics:value1.filter(v=>v.department===value2[type])
             })

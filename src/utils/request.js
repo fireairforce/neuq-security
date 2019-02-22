@@ -9,8 +9,7 @@ const fetch = options => {
 
   const myAxios = axios.create(axiosOptions)
   let token1 = window.localStorage.token?window.localStorage.token:"";
-  headers = token1 ? {...headers,token:token1}:headers
-  // console.log(token1);
+  headers = token1 ? {...headers,token:token1}:headers;
   switch (method.toLowerCase()) {
     case 'get':
       return myAxios.get(url, {
@@ -28,25 +27,26 @@ const fetch = options => {
     case 'patch':
       return myAxios.patch(url, data)
     case 'export':
-      return myAxios.get(url, {
-        params: data,
-        responseType: 'blob'
-      })
+      return myAxios.post(url, data,{headers:{...headers,'Content-Type':'application/json; application/octet-stream' }},{ responseType: 'blob' })
     default:
       return myAxios(options)
   }
 }
 
-const downFile = (blob, fileName) => {
+const downFile = (res, fileName) => {
   if (window.navigator.msSaveOrOpenBlob) {
-    window.navigator.msSaveBlob(blob, fileName)
+    window.navigator.msSaveBlob(res.data, fileName)
   } else {
-    let link = document.createElement('a')
-    link.href = window.URL.createObjectURL(blob)
-    link.download = fileName
-    link.target = '_blank'
-    link.click()
-    window.URL.revokeObjectURL(link.href)
+      // console.log(res);
+      let blob = new Blob([res.data],{ type: res.headers['content-type'] }); 
+      let downloadElement = document.createElement('a');
+      let href = window.URL.createObjectURL(blob); //创建下载的链接
+      downloadElement.href = href;
+      downloadElement.download = 'QRCode.zip'; //下载后文件名
+      document.body.appendChild(downloadElement);
+      downloadElement.click(); //点击下载
+      document.body.removeChild(downloadElement); //下载完成移除元素
+      window.URL.revokeObjectURL(href); //释放掉blob对象
   }
 }
 
@@ -57,9 +57,9 @@ const downFile = (blob, fileName) => {
  */
 
 export default async options => {
-  const res = await fetch(options)
+  const res = await fetch(options);
   if (options.method === 'export') {
-    downFile(res.data, options.filename)
+    downFile(res, options.token);
     return true
   }
   const { data } = res

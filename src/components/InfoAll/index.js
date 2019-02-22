@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import styles from './index.less';
-import {Form,Button,Table,Select} from 'antd'
+import { Form,Button,Table,Select,message,Modal } from 'antd'
 import { connect } from 'dva';
 import columns from '../../utils/header';
 import HeaderTwo from '../../layout/headerTwo';
@@ -36,9 +36,16 @@ class InfoAll extends React.Component{
                 type:'xxhz/handleCode',
                 payload:pass
             })
+        }else{
+            Modal.info({
+                title:'提示',
+                content:'请您先选择一个用户'
+            })
+            return;
         }
     }
-    onChoice = (type) =>{
+    // 信息筛选
+    onChoice = (type) =>{ 
         // const { statics } = this.state;
         if(value1.length){            
             this.setState({
@@ -63,9 +70,10 @@ class InfoAll extends React.Component{
                     })
                 }
               }else{
+                message.info('登录令牌已失效，请重新登录');
                 this.props.history.push(`/checklogin`); // 如果token过期了的话或者没有token直接让他跳转回去登录界面
               }
-            },3000)
+            },1000)
       }
       Options.map(v=>(
           value2[v.type]=v.value

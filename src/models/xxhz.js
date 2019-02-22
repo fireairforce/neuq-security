@@ -13,11 +13,10 @@ export default {
            }) 
         },
         *handleCode({payload},{call,put}){
-            const response = yield call(handleCode);
-            console.log(response);
+            const res = yield call(handleCode,payload);
             yield put({
                 type:'getcode',
-                payload:response
+                payload:res
             })
         }
     },

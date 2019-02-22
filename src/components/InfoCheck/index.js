@@ -28,12 +28,12 @@ class InfoCheck extends React.Component{
             selectedData:a
         });
       }
-        getcheckedbox = (record) => ({
-              disabled: value1.map(item => (
-                //   console.log(item.id),
-                 record.id===parseInt(item.id)
-              ))
-          })
+        // getcheckedbox = (record) => ({
+        //       disabled: value1.map(item => (
+        //         //   console.log(item.id),
+        //          record.id===parseInt(item.id)
+        //       ))
+        //   })
 
       // 获取所有申请人的数据
       getdata = (params) => {
@@ -144,7 +144,7 @@ class InfoCheck extends React.Component{
                 message.info('登录令牌已失效，请重新登录');
                 this.props.history.push(`/checklogin`); // 如果token过期了的话或者没有token直接让他跳转回去登录界面
             }
-        },2000)
+        },1000)
      }
     }
     render(){ 
@@ -154,7 +154,7 @@ class InfoCheck extends React.Component{
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
-            getCheckboxProps: this.getcheckedbox //禁止一些选择，还没考虑使用
+            // getCheckboxProps: this.getcheckedbox //禁止一些选择，还没考虑使用
         };
         // console.log(value1); // value1指的是通过了审核的数据
         // console.log(value2);  // value2是没有通过审核的数据
@@ -187,6 +187,7 @@ class InfoCheck extends React.Component{
                                 </div>
                             </Form> 
                         </div>
+                        <div className={styles.clear}></div>
                         <div className={styles.content1}>
                         <Table 
                             bordered

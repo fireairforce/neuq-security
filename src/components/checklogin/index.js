@@ -44,21 +44,21 @@ class CheckLogin extends React.Component{
                         >
 
                             {getFieldDecorator('zh', {
-                                rules: [{ required: true, message: '请输入账户!' }],
+                                rules: [{ required: true, message: '请输入账号!' }],
                             })(
-                                <Input placeholder="请输入您的姓名"  style={{width: '15vw'}}/>
+                                <Input placeholder="请输入您的账号"  style={{width: '15vw'}}/>
                             )}
                         </FormItem>
 
                         <FormItem
-                            label="姓名"
-                            key='name'
+                            label="密码"
+                            key='password'
                             {...formItemLayout}
                         >
                             {getFieldDecorator('mm', {
                                 rules: [{ required: true, message: '请输入密码!' }],
                             })(
-                                <Input placeholder="请输入您的姓名"  style={{width: '15vw'}} type="password"/>
+                                <Input placeholder="请输入您的密码"  style={{width: '15vw'}} type="password"/>
                             )}
                         </FormItem>
 

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import styles from './index.less';
 import { Form ,Cascader, Input, Button,Modal} from 'antd';
-import {connect} from 'dva';
+import { connect } from 'dva';
 import verity from '../../utils/regex';
 import Options from '../../utils/options';
 import Header from './../../layout/headerOne';
@@ -14,14 +14,9 @@ class InfoCollect extends React.Component{
     // componentDidMount(){
     //     const ids = [146]
     //     const data = { ids }
-    //     axios({
-    //       method:'post', 
-
-    //       url:'http://neuqsecurity.lyzwhh.top/pass/getQRcode',
-    //       data,
-    //       token:'4df9e8f1434c26f33640e952dab9a414',
-    //     }).then(res=>{
-
+    //     axios.post('http://neuqsecurity.lyzwhh.top/pass/getQRcode',{
+    //         data
+    //     },{token:'b1449a2260c286fae4b4c78493855a2b'},{responseType: 'blob'}).then(res=>{
     //         var blob = new Blob([res.data],{type: res.headers['content-type']});
     //         var downloadElement = document.createElement('a');
     //         var href = window.URL.createObjectURL(blob); //创建下载的链接

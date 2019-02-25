@@ -65,6 +65,7 @@ class InfoAll extends React.Component{
                     value1.sort(function(a,b){
                         return b.id - a.id;  //对里面的数据进行一个时间的从最新到后面的排序
                     })
+                    value1 = JSON.parse(JSON.stringify(value1).replace(/id/g,"key"));
                     this.setState({
                         statics:value1
                     })

@@ -6,7 +6,7 @@ import { Form,Select,Button,Table,Modal,message } from 'antd';
 import HeaderTwo from '../../layout/headerTwo';
 const FormItem = Form.Item;
 const Option = Select.Option;
-let value1=[],value2=[],value3=[];
+let value1=[],value2=[],value3=[],data=[],index=[];
 class InfoCheck extends React.Component{
     // 把已经通过审核的数据搞的不能选择
     state={
@@ -25,12 +25,6 @@ class InfoCheck extends React.Component{
         );
        
       }
-        // getcheckedbox = (record) => ({
-        //       disabled: value1.map(item => (
-        //          record.key==item.key
-        //       ))
-        //   })
-
       // 获取所有申请人的数据
       getdata = (params) => {
         const {dispatch} = this.props;
@@ -110,22 +104,41 @@ class InfoCheck extends React.Component{
         }
        
     }
-    //批量选择操作,可以考虑对这边的
-//    selectmore = () =>{
-//        const { current,statics,selectedRowKeys } = this.state;
-//        for(var i =(current-1)*10;i<(statics.length-(current-1)*10);i++){
-//            selectedRowKeys.push(statics[i].key);
-//        }
-//        console.log(selectedRowKeys);
-
-//    }
+//批量选择操作,可以考虑对这边的
+   selectmore = () =>{
+       const { current,statics,selectedRowKeys } = this.state;
+       if(!statics.length){
+        Modal.info({
+            title:'提示',
+            content:'当前数据列表为空,无法选择'
+        })
+       }else{
+            let m = statics.length%10; // m是多的数据
+            let n = Math.ceil(statics.length/10); // n是页数
+            if(index.length==selectedRowKeys.length&&index.length&&selectedRowKeys){
+                this.onSelectChange([],[]);
+            }else{
+                if(current==n){ //在最后一页
+                    for(let i = statics.length-1;i>=statics.length-m;i--){
+                    index.push(statics[i].key);
+                    data.push(statics[i]);
+                    }
+                }else if(current<n){
+                    for(let i =(current-1)*10;i<current*10;i++){
+                        index.push(statics[i].key);
+                        data.push(statics[i]);
+                    }
+                }
+                this.onSelectChange(index,data);
+            }   
+       }  
+   }
    componentDidMount(){
        if(!this.state.statics.length){ //当列表的数据为空的时候，进行一次请求，节省性能
-            this.getdata('getpassList');
-            this.getdata('getfailList');
+         this.getdata('getpassList');
+         this.getdata('getfailList');
         setTimeout(()=>{
             if((this.props.shyg.content||this.props.shyg.value)&&(this.props.shyg.content.code==="0"||this.props.shyg.value.code==="0")){
-                    
                     let a = this.props.shyg.value?this.props.shyg.value.data:[]; // 通过的数据
                     let b = this.props.shyg.content?this.props.shyg.content.data:[];  //没有通过的数据
                     a.map((item)=>(
@@ -158,7 +171,7 @@ class InfoCheck extends React.Component{
     }
     render(){ 
         // console.log(this.props);
-        const { selectedRowKeys,statics,current,selectedRows } = this.state;
+        const { selectedRowKeys,statics,current } = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -167,8 +180,8 @@ class InfoCheck extends React.Component{
             }),
         };
         // console.log(this.props);
-        console.log(value1); // value1指的是通过了审核的数据
-        console.log(value2);  // value2是没有通过审核的数据
+        // console.log(value1); // value1指的是通过了审核的数据
+        // console.log(value2);  // value2是没有通过审核的数据
         return(
             <Fragment>
                <HeaderTwo />
@@ -177,7 +190,7 @@ class InfoCheck extends React.Component{
                     <div className={styles.content2}>
                         <Form layout="inline">
                                 <div className={styles.content3}>
-                                   <Button onClick={this.selectmore}>批量审核 ↓ </Button>
+                                   <Button onClick={this.selectmore}>批量审核</Button>
                                    <FormItem>
                                         {
                                         <Select

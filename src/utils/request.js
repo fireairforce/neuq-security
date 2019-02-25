@@ -21,13 +21,13 @@ const fetch = options => {
         data: data
       })
     case 'post':
-      return myAxios.post(url, data,{headers})
+      return myAxios.post(url,data,{headers})
     case 'put':
-      return myAxios.put(url, data)
+      return myAxios.put(url,data)
     case 'patch':
-      return myAxios.patch(url, data)
+      return myAxios.patch(url,data)
     case 'export':
-      return myAxios.post(url, data,{headers:{...headers,'Content-Type':'application/json; application/octet-stream' }},{ responseType: 'blob' })
+      return myAxios.post(url,data,{headers:{...headers,'Content-Type':'application/json'}},{responseType:'blob'})
     default:
       return myAxios(options)
   }

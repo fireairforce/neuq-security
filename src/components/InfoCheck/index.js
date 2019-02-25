@@ -22,7 +22,7 @@ class InfoCheck extends React.Component{
         while(selectedRows.length){
             a.push(selectedRows.pop());
         }
-        // console.log(a);
+        console.log(a);
         this.setState({ 
             selectedRowKeys,
             selectedData:a
@@ -31,7 +31,7 @@ class InfoCheck extends React.Component{
         // getcheckedbox = (record) => ({
         //       disabled: value1.map(item => (
         //         //   console.log(item.id),
-        //          record.id===parseInt(item.id)
+        //          record.id==item.key
         //       ))
         //   })
 
@@ -138,7 +138,7 @@ class InfoCheck extends React.Component{
                         value3 = JSON.parse(JSON.stringify(value3).replace(/id/g,"key"));
                     }
                     this.setState({
-                        statics:value3,
+                        statics:value2,
                     }) 
             }else{
                 message.info('登录令牌已失效，请重新登录');
@@ -154,8 +154,9 @@ class InfoCheck extends React.Component{
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
-            // getCheckboxProps: this.getcheckedbox //禁止一些选择，还没考虑使用
+            getCheckboxProps: this.getcheckedbox //禁止一些选择，还没考虑使用
         };
+        console.log(this.props);
         // console.log(value1); // value1指的是通过了审核的数据
         // console.log(value2);  // value2是没有通过审核的数据
         return(
@@ -164,22 +165,21 @@ class InfoCheck extends React.Component{
                <div className={styles.wrapper}>
                     <h1 className={styles.header2}>信息审核</h1>
                     <div className={styles.content2}>
-                        <Form layout="inline" >
+                        <Form layout="inline">
                                 <div className={styles.content3}>
                                    <Button onClick={this.selectmore}>批量审核</Button>
-                                    <FormItem>
+                                   <FormItem>
                                         {
-                                            getFieldDecorator('city_id')(
-                                                <Select
-                                                    style={{width:100}}
-                                                    placeholder="审核信息"
-                                                >
-                                                    <Option value="0" onClick={this.getFail}>未通过审核</Option>
-                                                    <Option value="1" onClick={this.getPass}>已通过审核</Option>
-                                                </Select>
-                                            )
+                                        <Select
+                                            style={{width:100}}
+                                            placeholder="未通过审核"
+                                            defaultValue="0"
+                                        >
+                                            <Option value="0" onClick={this.getFail}>未通过审核</Option>
+                                            <Option value="1" onClick={this.getPass}>已通过审核</Option>
+                                        </Select>
                                         }
-                                    </FormItem>
+                                        </FormItem>
                                 </div>
                                 <div className={styles.content4}>
                                     <Button onClick={()=>{this.cheched('handlepassList')}} type="primary" style={{backgroundColor:'#99CC66',borderColor:'#d9d9d9'}}>确认通过</Button>

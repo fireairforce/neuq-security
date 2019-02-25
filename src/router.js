@@ -3,6 +3,7 @@ import { Route, Switch ,routerRedux, Redirect} from 'dva/router';
 import dynamic from 'dva/dynamic';
 import routes from './config/route';
 import NotFound from './components/404';
+
 const {ConnectedRouter} =routerRedux;
 function RouterConfig({ history,app }){
   return (

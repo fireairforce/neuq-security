@@ -1,5 +1,6 @@
 import dva from 'dva';
 import './index.css';
+// import './utils/changeCode';
 import {createBrowserHistory as createHistory} from 'history';
 // 1. Initialize
 const app = dva({history:createHistory()});

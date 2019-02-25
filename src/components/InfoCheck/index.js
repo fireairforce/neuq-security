@@ -6,32 +6,28 @@ import { Form,Select,Button,Table,Modal,message } from 'antd';
 import HeaderTwo from '../../layout/headerTwo';
 const FormItem = Form.Item;
 const Option = Select.Option;
-let value1=[],value2=[],a=[],value3=[];
+let value1=[],value2=[],value3=[];
 class InfoCheck extends React.Component{
     // 把已经通过审核的数据搞的不能选择
     state={
-        selectedRowkeys:[],
+        selectedRowKeys:[],
         statics:[],
-        selectedData:[],
+        selectedRows:[],
+        current:1,
     };
     // 数据的选择函数
     onSelectChange = (selectedRowKeys,selectedRows) => {
-        // console.log(selectedRowKeys);  
-        // console.log(selectedRows);
-        // a.push(selectedRows.pop());
-        while(selectedRows.length){
-            a.push(selectedRows.pop());
-        }
-        console.log(a);
         this.setState({ 
-            selectedRowKeys,
-            selectedData:a
-        });
+            selectedRowKeys:selectedRowKeys,
+            selectedRows:selectedRows
+        },
+        // ()=>{console.log(this.state)}
+        );
+       
       }
         // getcheckedbox = (record) => ({
         //       disabled: value1.map(item => (
-        //         //   console.log(item.id),
-        //          record.id==item.key
+        //          record.key==item.key
         //       ))
         //   })
 
@@ -45,7 +41,6 @@ class InfoCheck extends React.Component{
       }
    // 获取到那些没有通过审核的数据放在列表里面
     getFail = () =>{
-          a=[];
           this.setState({
               selectedRowKeys:[],       
               statics:value2
@@ -53,10 +48,9 @@ class InfoCheck extends React.Component{
     }
    // 获取那些通过审核的数据放在列表里面
     getPass = () =>{
-        a=[];
         let trans2 = [];
         for(var i in value1){
-            trans2[i]=parseInt(i);
+            trans2[i]= value1[i].key;
         }
         // console.log(trans2);
         setTimeout(() => {
@@ -74,7 +68,7 @@ class InfoCheck extends React.Component{
         let ids = [];
         if(item.length){
             for(var i in item){
-                ids.push(item[i].id);
+                ids.push(item[i].key);
             }
             const pass = { ids }
             if(params==='handlefailList'){
@@ -93,13 +87,19 @@ class InfoCheck extends React.Component{
                 })
               
             }else{
-                dispatch({
-                    type:`shyg/${params}`,
-                    payload:pass
-                })
-                setTimeout(()=>{
-                    window.location.href = window.location.href;
-                  },1000)
+                　Modal.confirm({
+                    title:'您确定通过这些信息吗',
+                    content:'一旦确认便不可修改',
+                    onOk(){
+                     dispatch({
+                         type:`shyg/${params}`,
+                         payload:pass
+                     })
+                     setTimeout(()=>{
+                         window.location.href = window.location.href;
+                       },1000)
+                   }
+                 })
             }      
         }else{
             Modal.info({
@@ -111,19 +111,29 @@ class InfoCheck extends React.Component{
        
     }
     //批量选择操作,可以考虑对这边的
-   selectmore = () =>{
-       alert('还没开发，敬请期待')
-   }
+//    selectmore = () =>{
+//        const { current,statics,selectedRowKeys } = this.state;
+//        for(var i =(current-1)*10;i<(statics.length-(current-1)*10);i++){
+//            selectedRowKeys.push(statics[i].key);
+//        }
+//        console.log(selectedRowKeys);
+
+//    }
    componentDidMount(){
        if(!this.state.statics.length){ //当列表的数据为空的时候，进行一次请求，节省性能
             this.getdata('getpassList');
             this.getdata('getfailList');
         setTimeout(()=>{
             if((this.props.shyg.content||this.props.shyg.value)&&(this.props.shyg.content.code==="0"||this.props.shyg.value.code==="0")){
-                    value1 = this.props.shyg.value?this.props.shyg.value.data:[]; // 通过的数据
-                    value2 = this.props.shyg.content?this.props.shyg.content.data:[];  //没有通过的数据
-                    // console.log(value1);
-                    // console.log(value2); 
+                    
+                    let a = this.props.shyg.value?this.props.shyg.value.data:[]; // 通过的数据
+                    let b = this.props.shyg.content?this.props.shyg.content.data:[];  //没有通过的数据
+                    a.map((item)=>(
+                        value1.push(Object.assign({},item,{flag:true})) // 往value1里面新增一个属性用于禁选的判断
+                    ))
+                    b.map((item)=>(
+                        value2.push(Object.assign({},item,{flag:false}))
+                    ))
                     if(value1.length&&value2.length){
                         value1.sort((a,b)=>{
                             return b.id-a.id; // 对通过的数据按照时间的近到远的排序
@@ -131,11 +141,10 @@ class InfoCheck extends React.Component{
                         value2.sort((a,b)=>{
                             return b.id-a.id;　// 对还没有审核的数据按照近到远的排序
                         })
-                         // 把id换成key，避免error
-                        value3 = value2.concat(value1); //把没通过的数据放在通过的数据的前面
                         value1 = JSON.parse(JSON.stringify(value1).replace(/id/g,"key"));
                         value2 = JSON.parse(JSON.stringify(value2).replace(/id/g,"key"));
-                        value3 = JSON.parse(JSON.stringify(value3).replace(/id/g,"key"));
+                         // 把id换成key，避免error
+                        value3 = value2.concat(value1); //把没通过的数据放在通过的数据的前面
                     }
                     this.setState({
                         statics:value2,
@@ -149,16 +158,17 @@ class InfoCheck extends React.Component{
     }
     render(){ 
         // console.log(this.props);
-        const {getFieldDecorator} = this.props.form; 
-        const {selectedRowKeys,statics} = this.state;
+        const { selectedRowKeys,statics,current,selectedRows } = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
-            getCheckboxProps: this.getcheckedbox //禁止一些选择，还没考虑使用
+            getCheckboxProps: record => ({
+                disabled: record.flag
+            }),
         };
-        console.log(this.props);
-        // console.log(value1); // value1指的是通过了审核的数据
-        // console.log(value2);  // value2是没有通过审核的数据
+        // console.log(this.props);
+        console.log(value1); // value1指的是通过了审核的数据
+        console.log(value2);  // value2是没有通过审核的数据
         return(
             <Fragment>
                <HeaderTwo />
@@ -167,7 +177,7 @@ class InfoCheck extends React.Component{
                     <div className={styles.content2}>
                         <Form layout="inline">
                                 <div className={styles.content3}>
-                                   <Button onClick={this.selectmore}>批量审核</Button>
+                                   <Button onClick={this.selectmore}>批量审核 ↓ </Button>
                                    <FormItem>
                                         {
                                         <Select
@@ -194,6 +204,21 @@ class InfoCheck extends React.Component{
                             rowSelection={rowSelection}
                             columns={columns}
                             dataSource={statics}
+                            pagination={{
+                                total:statics.length,
+                                pageSize:10,
+                                defaultPageSize:10,
+                                current:current,
+                                // showSizeChanger:true,
+                                onChange:(page,pageSize)=>{
+                                     this.setState({
+                                        current:page
+                                     })                                   
+                                },
+                                showTotal: function () {  //设置显示一共几条数据
+                                    return '共 ' + statics.length + ' 条数据'; 
+                                }
+                            }}
                             />
                         </div>
                </div>

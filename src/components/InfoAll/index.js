@@ -28,7 +28,7 @@ class InfoAll extends React.Component{
         let ids =[];
         if(item.length){
             for(let i in item){
-                ids.push(item[i].id);
+                ids.push(item[i].key);
             }
             const pass = {ids};
             console.log(pass);

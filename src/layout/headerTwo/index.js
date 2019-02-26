@@ -10,7 +10,7 @@ class HeaderTwo extends React.Component{
                    <img src="http://wdlj.zoomdong.xin/security_logo.png" style={{width:"65px",height:"65px"}}  alt="logo"/>
                </div>
                <div className={styles.word}>
-                 <img src="http://wdlj.zoomdong.xin/word.png" alt="word"/>
+                 <img src="http://wdlj.zoomdong.xin/n_s_logo.png" style={{width:"256px",height:"70px"}} alt="word"/>
                </div>
             </div>
         )

@@ -105,8 +105,9 @@ class InfoAll extends React.Component{
         // console.log(this.props);
           return(
             <Fragment>
-                <HeaderTwo />
+                
                 <div className={styles.wrapper}>
+                   <HeaderTwo />
                    <h1 className={styles.header2}>信息汇总</h1>
                    <div className={styles.content2}>
                       <Form layout="inline" >

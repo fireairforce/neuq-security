@@ -27,7 +27,7 @@ class CheckLogin extends React.Component{
         const formItemLayout = {labelCol: {xs: {span: 24},sm: {span: 6}},wrapperCol: {xs: {span: 24},sm: {span: 12}} };
         return(
             <Fragment>
-                <Header />
+                {/* <Header /> */}
                 <div className={styles.container}>
                    <div className={styles.wrapper}>
                      <div className={styles.content}></div>

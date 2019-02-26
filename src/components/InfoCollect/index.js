@@ -146,7 +146,7 @@ class InfoCollect extends React.Component{
                             {getFieldDecorator('gx', {
                                 rules: [{ message: '' }],
                             })(
-                                <Input placeholder="本人可以不用填写此项"  style={{width: '15vw'}}/>
+                                <Input placeholder="车主是本人可以不填"  style={{width: '15vw'}}/>
                             )}
                 </FormItem>
 

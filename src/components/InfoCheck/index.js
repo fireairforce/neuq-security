@@ -210,7 +210,7 @@ class InfoCheck extends React.Component{
                 disabled: record.flag
             }),
         };
-        console.log(this.state);
+        // console.log(this.state);
          // console.log(this.props);
         // console.log(value1); // value1指的是通过了审核的数据
         // console.log(value2);  // value2是没有通过审核的数据

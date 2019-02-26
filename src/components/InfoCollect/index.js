@@ -92,9 +92,9 @@ class InfoCollect extends React.Component{
                     key='name'
                     >
                         {getFieldDecorator('xm', {
-                            rules: [{ required: true, message: '请输入用户名!' }],
+                            rules: [{ required: true, message: '请输入姓名!' }],
                         })(
-                            <Input placeholder="请输入您的姓名"  style={{width: '15vw'}}/>
+                            <Input placeholder="请输入申请人姓名"  style={{width: '15vw'}}/>
                         )}
                     </FormItem>
 
@@ -118,7 +118,7 @@ class InfoCollect extends React.Component{
                     key='carnumber'
                     >
                         {getFieldDecorator('cp', {
-                            rules: [{ required: true, message: '请输入用户名!' }],
+                            rules: [{ required: true, message: '请输入车牌号!' }],
                         })(
                             <Input placeholder="请输入您的车牌号"  style={{width: '15vw'}}/>
                         )}
@@ -144,9 +144,9 @@ class InfoCollect extends React.Component{
                         key='connect'
                         >
                             {getFieldDecorator('gx', {
-                                rules: [{ required: true, message: '请输入您与车主关系' }],
+                                rules: [{ message: '' }],
                             })(
-                                <Input placeholder="请输入您与车主关系"  style={{width: '15vw'}}/>
+                                <Input placeholder="本人可以不用填写此项"  style={{width: '15vw'}}/>
                             )}
                 </FormItem>
 

@@ -15,13 +15,28 @@ class InfoCheck extends React.Component{
         selectedRows:[],
         current:1,
     };
+    // 对数据进行去重
+    removeDuplicatedItem = arr =>{
+        for(var i = 0; i < arr.length-1; i++){
+            for(var j = i+1; j < arr.length; j++){
+                if(arr[i]==arr[j]){
+                   arr.splice(j,1);
+                   j--;//删除重复后，数组下标往前移动
+                }
+            }
+        }
+        return arr;
+    }
     // 数据的选择函数
     onSelectChange = (selectedRowKeys,selectedRows) => {
         this.setState({ 
-            selectedRowKeys:selectedRowKeys,
-            selectedRows:selectedRows
+            selectedRowKeys,
+            selectedRows
         },
-        // ()=>{console.log(this.state)}
+          ()=>{
+              this.removeDuplicatedItem(selectedRowKeys);
+              this.removeDuplicatedItem(selectedRows)
+            } 
         );
        
       }
@@ -115,22 +130,39 @@ class InfoCheck extends React.Component{
        }else{
             let m = statics.length%10; // m是多的数据
             let n = Math.ceil(statics.length/10); // n是页数
-            if(index.length==selectedRowKeys.length&&index.length&&selectedRowKeys){
-                this.onSelectChange([],[]);
-            }else{
+            // if(index.length==selectedRowKeys.length&&index.length){
+            //     this.onSelectChange([],[]);
+            // }else{
+                // 取消选择
+                // if(index.length==selectedRowKeys.length&&index.length){
+                //    let len = index.length;
+                //    let flag = 1;
+                //    for(let i = 0; i<len ;i++){
+                //        if(selectedData[i].key!=data[i].key){
+                //           flag = 0; 
+                //        }
+                //    }
+                //    if(flag){
+                //       this.onSelectChange([],[]); // 直接把当前页面清空
+                //    }else{
+                       
+                //    }
+                // }
                 if(current==n){ //在最后一页
                     for(let i = statics.length-1;i>=statics.length-m;i--){
-                    index.push(statics[i].key);
-                    data.push(statics[i]);
+                      index.push(statics[i].key);
+                      data.push(statics[i]);
+                    //   console.log(statics[i]);
                     }
-                }else if(current<n){
+                }
+               else if(current<n){
                     for(let i =(current-1)*10;i<current*10;i++){
                         index.push(statics[i].key);
                         data.push(statics[i]);
                     }
                 }
                 this.onSelectChange(index,data);
-            }   
+            // }   
        }  
    }
    componentDidMount(){
@@ -170,7 +202,6 @@ class InfoCheck extends React.Component{
      }
     }
     render(){ 
-        // console.log(this.props);
         const { selectedRowKeys,statics,current } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -179,7 +210,8 @@ class InfoCheck extends React.Component{
                 disabled: record.flag
             }),
         };
-        // console.log(this.props);
+        console.log(this.state);
+         // console.log(this.props);
         // console.log(value1); // value1指的是通过了审核的数据
         // console.log(value2);  // value2是没有通过审核的数据
         return(
@@ -193,14 +225,14 @@ class InfoCheck extends React.Component{
                                    <Button onClick={this.selectmore}>批量审核</Button>
                                    <FormItem>
                                         {
-                                        <Select
-                                            style={{width:100}}
-                                            placeholder="未通过审核"
-                                            defaultValue="0"
-                                        >
-                                            <Option value="0" onClick={this.getFail}>未通过审核</Option>
-                                            <Option value="1" onClick={this.getPass}>已通过审核</Option>
-                                        </Select>
+                                            <Select
+                                                style={{width:100}}
+                                                placeholder="未通过审核"
+                                                defaultValue="0"
+                                            >
+                                                <Option value="0" onClick={this.getFail}>未通过审核</Option>
+                                                <Option value="1" onClick={this.getPass}>已通过审核</Option>
+                                            </Select>
                                         }
                                         </FormItem>
                                 </div>

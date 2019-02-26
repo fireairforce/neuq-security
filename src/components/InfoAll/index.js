@@ -59,7 +59,7 @@ class InfoAll extends React.Component{
             this.getdata("getpassList");
             setTimeout(()=>{
                 const {xxhz} = this.props;
-                if(xxhz.value&&xxhz.value.code==='0'){
+                if(localStorage.token){
                   value1 = xxhz.value.data;
                   if(value1.length){
                     value1.sort(function(a,b){
@@ -130,18 +130,14 @@ class InfoAll extends React.Component{
                                         <Select
                                             style={{width:"100px"}}
                                             placeholder="学院"
+                                            defaultValue="0"
                                         >
                                           <Option value="0" onClick={()=>{this.setState({statics:value1})}}>全部</Option>
-                                          <Option value="1" onClick={()=>{this.onChoice('cs')}}>计算机</Option>
-                                          <Option value="2" onClick={()=>{this.onChoice('gl')}}>管理</Option>
-                                          <Option value="3" onClick={()=>{this.onChoice('ky')}}>控院</Option>
-                                          <Option value="4" onClick={()=>{this.onChoice('st')}}>数统</Option>
-                                          <Option value="5" onClick={()=>{this.onChoice('zc')}}>资材</Option>
-                                          <Option value="6" onClick={()=>{this.onChoice('jj')}}>经济</Option>
-                                          <Option value="7" onClick={()=>{this.onChoice('yy')}}>语言</Option>
-                                          <Option value="8" onClick={()=>{this.onChoice('sky')}}>社科院</Option>
-                                          <Option value="9" onClick={()=>{this.onChoice('tyb')}}>体育部</Option>
-                                          <Option value="10" onClick={()=>{this.onChoice('yjs')}}>研究生院</Option>
+                                           {
+                                               Options.map((item,index)=>{
+                                                   return <Option key={item.value} value={`${index+1}`} onClick={()=>{this.onChoice(`${item.type}`)}}>{item.name}</Option>
+                                               })
+                                           } 
                                         </Select>
                                     )
                                 } 

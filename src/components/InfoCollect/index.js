@@ -4,7 +4,7 @@ import { Form ,Cascader, Input, Button,Modal} from 'antd';
 import { connect } from 'dva';
 import verity from '../../utils/regex';
 import Options from '../../utils/options';
-import Header from './../../layout/headerOne';
+// import Header from './../../layout/headerOne';
 
 import axios from 'axios';
 

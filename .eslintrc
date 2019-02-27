@@ -1,3 +1,7 @@
 {
-  "extends": "umi"
+  "extends": "umi",
+  "rules":{
+    "eqeqeq":["off"],
+    "no-unused-vars":["off"]
+  }
 }

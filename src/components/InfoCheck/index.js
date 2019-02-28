@@ -14,6 +14,7 @@ class InfoCheck extends React.Component{
         statics:[],
         selectedRows:[],
         current:1,
+        pagestatics:[]
     };
     // 对数据进行去重
     removeDuplicatedItem = arr =>{
@@ -41,11 +42,11 @@ class InfoCheck extends React.Component{
        
       }
       // 获取所有申请人的数据
-      getdata = (params) => {
-        const {dispatch} = this.props;
+      getdata = (params,data) => {
+        const { dispatch } = this.props;
         dispatch({
             type:`shyg/${params}`,
-            payload:''
+            payload:data
         })
       }
    // 获取到那些没有通过审核的数据放在列表里面
@@ -68,7 +69,6 @@ class InfoCheck extends React.Component{
                 selectedRowKeys:trans2
             })
         }, 500);
-        // console.log(this.state.selectedRowkeys);
     }
     cheched = (params) => {
         let item = this.state.selectedData;
@@ -94,7 +94,6 @@ class InfoCheck extends React.Component{
                       },1000)
                   }
                 })
-              
             }else{
                 　Modal.confirm({
                     title:'您确定通过这些信息吗',
@@ -121,7 +120,7 @@ class InfoCheck extends React.Component{
     }
 //批量选择操作,可以考虑对这边的
    selectmore = () =>{
-       const { current,statics,selectedRowKeys } = this.state;
+       const { current,statics,pagestatics } = this.state;         
        if(!statics.length){
         Modal.info({
             title:'提示',
@@ -130,6 +129,19 @@ class InfoCheck extends React.Component{
        }else{
             let m = statics.length%10; // m是多的数据
             let n = Math.ceil(statics.length/10); // n是页数
+            if( current == n ){
+              for(let i = statics.length-1;i>=statics.length-m;i--){
+                  index.push(statics[i].key)
+                  data.push(statics[i]);
+              }
+            }else if(current<n){
+                for(let i =(current-1)*10;i<current*10;i++){
+                    index.push(statics[i].key);
+                    data.push(statics[i]);
+                }
+            }
+            this.onSelectChange(index,data);
+
             // if(index.length==selectedRowKeys.length&&index.length){
             //     this.onSelectChange([],[]);
             // }else{
@@ -148,26 +160,26 @@ class InfoCheck extends React.Component{
                        
                 //    }
                 // }
-                if(current==n){ //在最后一页
-                    for(let i = statics.length-1;i>=statics.length-m;i--){
-                      index.push(statics[i].key);
-                      data.push(statics[i]);
-                    //   console.log(statics[i]);
-                    }
-                }
-               else if(current<n){
-                    for(let i =(current-1)*10;i<current*10;i++){
-                        index.push(statics[i].key);
-                        data.push(statics[i]);
-                    }
-                }
-                this.onSelectChange(index,data);
+            //     if(current==n){ //在最后一页
+            //         for(let i = statics.length-1;i>=statics.length-m;i--){
+            //           index.push(statics[i].key);
+            //           data.push(statics[i]);
+            //         //   console.log(statics[i]);
+            //         }
+            //     }
+            //    else if(current<n){
+            //         for(let i =(current-1)*10;i<current*10;i++){
+            //             index.push(statics[i].key);
+            //             data.push(statics[i]);
+            //         }
+            //     }
+            //     this.onSelectChange(index,data);
             // }   
        }  
    }
    componentDidMount(){
-       if(!this.state.statics.length){ //当列表的数据为空的时候，进行一次请求，节省性能
-         this.getdata('getpassList');
+       if(localStorage.token){ //当token存在的时候进行请求
+         this.getdata('getpassList'); 
          this.getdata('getfailList');
         setTimeout(()=>{
             if((this.props.shyg.content||this.props.shyg.value)&&(this.props.shyg.content.code==="0"||this.props.shyg.value.code==="0")){
@@ -194,12 +206,12 @@ class InfoCheck extends React.Component{
                     this.setState({
                         statics:value2,
                     }) 
-            }else{
-                message.info('登录令牌已失效，请重新登录');
-                this.props.history.push(`/checklogin`); // 如果token过期了的话或者没有token直接让他跳转回去登录界面
             }
         },1000)
-     }
+     }else{
+        message.info('登录令牌已失效，请重新登录');
+        this.props.history.push(`/checklogin`); // 如果token过期了的话或者没有token直接让他跳转回去登录界面
+    }
     }
     render(){ 
         const { selectedRowKeys,statics,current } = this.state;
@@ -210,9 +222,9 @@ class InfoCheck extends React.Component{
                 disabled: record.flag
             }),
         };
-        // console.log(this.state);
+        console.log(this.state);
          // console.log(this.props);
-        // console.log(value1); // value1指的是通过了审核的数据
+         // console.log(value1); // value1指的是通过了审核的数据
         // console.log(value2);  // value2是没有通过审核的数据
         return(
             <Fragment>
@@ -257,9 +269,9 @@ class InfoCheck extends React.Component{
                                 current:current,
                                 // showSizeChanger:true,
                                 onChange:(page,pageSize)=>{
-                                     this.setState({
-                                        current:page
-                                     })                                   
+                                    this.setState({
+                                        current:page,
+                                    })                        
                                 },
                                 showTotal: function () {  //设置显示一共几条数据
                                     return '共 ' + statics.length + ' 条数据'; 

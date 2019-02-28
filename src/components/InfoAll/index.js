@@ -55,7 +55,7 @@ class InfoAll extends React.Component{
        
     }
     componentDidMount(){
-        if(!this.state.statics.length){
+        if(localStorage.token){
             this.getdata("getpassList");
             setTimeout(()=>{
                 const {xxhz} = this.props;
@@ -70,11 +70,11 @@ class InfoAll extends React.Component{
                         statics:value1
                     })
                 }
-              }else{
-                message.info('登录令牌已失效，请重新登录');
-                this.props.history.push(`/checklogin`); // 如果token过期了的话或者没有token直接让他跳转回去登录界面
               }
             },1000)
+      }else{
+        message.info('登录令牌已失效，请重新登录');
+        this.props.history.push(`/checklogin`); // 如果token过期了的话或者没有token直接让他跳转回去登录界面
       }
       Options.map(v=>(
           value2[v.type]=v.value
@@ -112,7 +112,7 @@ class InfoAll extends React.Component{
                    <div className={styles.content2}>
                       <Form layout="inline" >
                         <div className={styles.content3}>
-                            <FormItem>
+                            {/* <FormItem>
                                 {
                                     getFieldDecorator('request_id')(
                                         <Select
@@ -124,19 +124,19 @@ class InfoAll extends React.Component{
                                         </Select>      
                                     )
                                 }
-                            </FormItem>
+                            </FormItem> */}
                             <FormItem>
                                 {
                                     getFieldDecorator('school_name')(
                                         <Select
-                                            style={{width:"100px"}}
-                                            placeholder="学院"
+                                            style={{width:"200px"}}
+                                            placeholder="全部部门"
                                             defaultValue="0"
                                         >
                                           <Option value="0" onClick={()=>{this.setState({statics:value1})}}>全部</Option>
                                            {
                                                Options.map((item,index)=>{
-                                                   return <Option key={item.value} value={`${index+1}`} onClick={()=>{this.onChoice(`${item.type}`)}}>{item.name}</Option>
+                                                   return <Option key={item.value} value={`${index+1}`} onClick={()=>{this.onChoice(`${item.type}`)}}>{item.value}</Option>
                                                })
                                            } 
                                         </Select>

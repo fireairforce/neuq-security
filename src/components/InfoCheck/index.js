@@ -6,7 +6,7 @@ import { Form,Select,Button,Table,Modal,message } from 'antd';
 import HeaderTwo from '../../layout/headerTwo';
 const FormItem = Form.Item;
 const Option = Select.Option;
-let value1=[],value2=[],value3=[],data=[],index=[];
+let value1=[],value2=[],data=[],index=[];
 class InfoCheck extends React.Component{
     // 把已经通过审核的数据搞的不能选择
     state={
@@ -62,17 +62,13 @@ class InfoCheck extends React.Component{
         for(var i in value1){
             trans2[i]= value1[i].key;
         }
-        // console.log(trans2);
-        setTimeout(() => {
-            this.setState({
-                statics:value1,
-                selectedRowKeys:trans2
-            })
-        }, 500);
+        this.setState({
+            statics:value1,
+            selectedRowKeys:trans2
+        })
     }
     cheched = (params) => {
-        let item = this.state.selectedData;
-        // console.log(item);
+        let item = this.state.selectedRows;
         const { dispatch } = this.props;
         let ids = [];
         if(item.length){
@@ -80,6 +76,7 @@ class InfoCheck extends React.Component{
                 ids.push(item[i].key);
             }
             const pass = { ids }
+            // console.log(pass);
             if(params==='handlefailList'){
                　Modal.confirm({
                    title:'您确定要删除这些信息吗',
@@ -103,9 +100,6 @@ class InfoCheck extends React.Component{
                          type:`shyg/${params}`,
                          payload:pass
                      })
-                     setTimeout(()=>{
-                         window.location.href = window.location.href;
-                       },1000)
                    }
                  })
             }      
@@ -120,7 +114,7 @@ class InfoCheck extends React.Component{
     }
 //批量选择操作,可以考虑对这边的
    selectmore = () =>{
-       const { current,statics,pagestatics } = this.state;         
+       const { current,statics } = this.state;         
        if(!statics.length){
         Modal.info({
             title:'提示',
@@ -179,8 +173,8 @@ class InfoCheck extends React.Component{
    }
    componentDidMount(){
        if(localStorage.token){ //当token存在的时候进行请求
-         this.getdata('getpassList'); 
-         this.getdata('getfailList');
+        this.getdata('getpassList'); 
+        this.getdata('getfailList');
         setTimeout(()=>{
             if((this.props.shyg.content||this.props.shyg.value)&&(this.props.shyg.content.code==="0"||this.props.shyg.value.code==="0")){
                     let a = this.props.shyg.value?this.props.shyg.value.data:[]; // 通过的数据
@@ -201,7 +195,7 @@ class InfoCheck extends React.Component{
                         value1 = JSON.parse(JSON.stringify(value1).replace(/id/g,"key"));
                         value2 = JSON.parse(JSON.stringify(value2).replace(/id/g,"key"));
                          // 把id换成key，避免error
-                        value3 = value2.concat(value1); //把没通过的数据放在通过的数据的前面
+                        // value3 = value2.concat(value1); //把没通过的数据放在通过的数据的前面
                     }
                     this.setState({
                         statics:value2,
@@ -222,7 +216,7 @@ class InfoCheck extends React.Component{
                 disabled: record.flag
             }),
         };
-        console.log(this.state);
+        // console.log(this.state);
          // console.log(this.props);
          // console.log(value1); // value1指的是通过了审核的数据
         // console.log(value2);  // value2是没有通过审核的数据

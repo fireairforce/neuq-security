@@ -24,13 +24,13 @@ export default {
         *handlepassList({payload},{call,put}){
            const resopnse = yield call(passExamin,payload);
            if(resopnse.code===0){
-               message.success('您已同意该申请');
+            window.location.href = window.location.href;
            }
         },
         *handlefailList({payload},{call,put}){
            const resopnse = yield call(passReject,payload);
            if(resopnse.code===0){
-               message.success('您已拒绝该申请');
+            window.location.href = window.location.href;   
            }
         }
     },

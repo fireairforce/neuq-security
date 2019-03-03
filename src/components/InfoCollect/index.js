@@ -6,7 +6,7 @@ import verity from '../../utils/regex';
 import Options from '../../utils/options';
 // import Header from './../../layout/headerOne';
 
-import axios from 'axios';
+// import axios from 'axios';
 
 const FormItem = Form.Item;
 
@@ -16,7 +16,9 @@ class InfoCollect extends React.Component{
     //     const data = { ids }
     //     axios.post('http://neuqsecurity.lyzwhh.top/pass/getQRcode',{
     //         data
-    //     },{token:'b1449a2260c286fae4b4c78493855a2b'},{responseType: 'blob'}).then(res=>{
+    //     },{
+    //         headers:{token:'71ae0a939adec0ea62a32d0ca2ba6262'}
+    //     }).then(res=>{
     //         var blob = new Blob([res.data],{type: res.headers['content-type']});
     //         var downloadElement = document.createElement('a');
     //         var href = window.URL.createObjectURL(blob); //创建下载的链接

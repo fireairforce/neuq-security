@@ -27,7 +27,7 @@ const fetch = options => {
     case 'patch':
       return myAxios.patch(url,data)
     case 'export':
-      return myAxios.post(url,data,{headers:{...headers,'Content-Type':'application/json'}},{responseType:'blob'})
+      return myAxios.post(url,data,{ headers },{responseType:'blob'})
     default:
       return myAxios(options)
   }

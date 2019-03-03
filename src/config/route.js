@@ -19,6 +19,10 @@ const routes = [
       name:'infoall',
       models: () =>[import('./../models/xxhz')],
       component: () => import('./../components/InfoAll'),
+    },{
+      path:'/mobile',
+      name:'mobile',
+      component: () => import('./../components/mobilecollect'),
     }
   ]
 export default routes

@@ -4,7 +4,7 @@ import { Form ,Cascader, Input, Button,Modal} from 'antd';
 import { connect } from 'dva';
 import verity from '../../utils/regex';
 import Options from '../../utils/options';
-// import Header from './../../layout/headerOne';
+import { Redirect } from 'dva/router';
 
 // import axios from 'axios';
 
@@ -75,9 +75,11 @@ class InfoCollect extends React.Component{
     render(){
         const {getFieldDecorator} = this.props.form;
         const formItemLayout = {labelCol: {xs: {span: 24},sm: {span: 8}},wrapperCol: {xs: {span: 24},sm: {span: 12}} }
+        // console.log(document.body.scrollWidth);
+       
         return(
           <Fragment>
-              {/* <Header /> */}
+              {document.body.scrollWidth<400?<Redirect to="/mobile" />:null}
               <div className={styles.container}>
                 <div className={styles.wrapper}>
                     <div className={styles.content}></div>

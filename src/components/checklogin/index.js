@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import {connect} from 'dva';
 import {Form,Input,Button} from 'antd';
 import styles from './index.less';
-import Header from './../../layout/headerOne';
 const FormItem = Form.Item;
 
 class CheckLogin extends React.Component{

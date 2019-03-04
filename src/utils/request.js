@@ -27,7 +27,11 @@ const fetch = options => {
     case 'patch':
       return myAxios.patch(url,data)
     case 'export':
-      return myAxios.post(url,data,{ headers },{responseType:'blob'})
+      return myAxios.get(url,{
+         params:data,
+         headers:headers, 
+         responseType:'blob'
+        })
     default:
       return myAxios(options)
   }
@@ -37,12 +41,12 @@ const downFile = (res, fileName) => {
   if (window.navigator.msSaveOrOpenBlob) {
     window.navigator.msSaveBlob(res.data, fileName)
   } else {
-      // console.log(res);
+    // console.log(res);
       let blob = new Blob([res.data],{ type: res.headers['content-type'] }); 
       let downloadElement = document.createElement('a');
       let href = window.URL.createObjectURL(blob); //创建下载的链接
       downloadElement.href = href;
-      downloadElement.download = 'QRCode.zip'; //下载后文件名
+      downloadElement.download = 'Two dimension-code.zip'; //下载后文件名
       document.body.appendChild(downloadElement);
       downloadElement.click(); //点击下载
       document.body.removeChild(downloadElement); //下载完成移除元素

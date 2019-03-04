@@ -30,8 +30,8 @@ class InfoAll extends React.Component{
             for(let i in item){
                 ids.push(item[i].key);
             }
-            const pass = {ids};
-            console.log(pass);
+            let pass = ids.join('+')
+            // console.log(pass);
             dispatch({
                 type:'xxhz/handleCode',
                 payload:pass
@@ -112,22 +112,8 @@ class InfoAll extends React.Component{
                    <div className={styles.content2}>
                       <Form layout="inline" >
                         <div className={styles.content3}>
-                            {/* <FormItem>
-                                {
-                                    getFieldDecorator('request_id')(
-                                        <Select
-                                            style={{width:100}}
-                                            placeholder="未处理的请求"
-                                        >
-                                            <Option value="0">未处理的请求</Option>
-                                            <Option value="1">已处理的请求</Option>
-                                        </Select>      
-                                    )
-                                }
-                            </FormItem> */}
                             <FormItem>
                                 {
-                                    getFieldDecorator('school_name')(
                                         <Select
                                             style={{width:"200px"}}
                                             placeholder="全部部门"
@@ -140,7 +126,6 @@ class InfoAll extends React.Component{
                                                })
                                            } 
                                         </Select>
-                                    )
                                 } 
                             </FormItem>   
                             </div>

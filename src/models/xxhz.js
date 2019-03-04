@@ -13,7 +13,9 @@ export default {
            }) 
         },
         *handleCode({payload},{call,put}){
+            // console.log(payload);
             const res = yield call(handleCode,payload);
+            // console.log(res);
             yield put({
                 type:'getcode',
                 payload:res

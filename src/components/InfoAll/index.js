@@ -55,10 +55,10 @@ class InfoAll extends React.Component{
        
     }
     componentDidMount(){
+        this.getdata("getpassList");
         if(localStorage.token){
-            this.getdata("getpassList");
             setTimeout(()=>{
-                const {xxhz} = this.props;
+                const { xxhz } = this.props;
                 if(localStorage.token){
                   value1 = xxhz.value.data;
                   if(value1.length){

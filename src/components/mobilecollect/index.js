@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-import { Button, Col, Form, Input,Row,Cascader } from 'antd'
-import { Modal } from 'antd-mobile'
+import {  Col, Form, Input,Row,Cascader } from 'antd'
+
+import { Modal,Button } from 'antd-mobile'
+import 'antd-mobile/dist/antd-mobile.css';
 import verity from '../../utils/regex'
 import Options from '../../utils/options'
 import styles from './index.less'
@@ -15,17 +17,11 @@ class Collect extends Component {
       submitted: false,
       showModal:false
     }
-    this.handleReset = this.handleReset.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleReset () {
-    this.setState({loading: false,submitted:true})
-    this.props.form.resetFields()
-  }
 
   async handleSubmit(){
-      // console.log();
       this.setState({ loading:true })
       let value = this.props.form.getFieldsValue();
       const {xm,bm,cp,dh,gx}= value ;
@@ -59,7 +55,6 @@ class Collect extends Component {
         sm: {span: 12}
       }
     }
-    // console.log(this.props);
     return (
        <div className={styles.wrapper}>
         <div className={styles.header}>
@@ -147,17 +142,9 @@ class Collect extends Component {
                   onClick={this.handleSubmit}
                   loading={this.state.loading}
                   disabled={this.state.submitted}
-                  style={{marginLeft: "20%" ,width:100}}
+                  style={{width:"90%",marginLeft:'5%'}}
                 >
                   {this.state.submitted ? '提交成功' : '点击提交'}
-                </Button>
-                <Button
-                  type="ghost"
-                  onClick={this.handleReset}
-                  className='form-button-2'
-                  style={{marginLeft: 20,width:100}}
-                >
-                  重置
                 </Button>
               </Col>
             </Row>

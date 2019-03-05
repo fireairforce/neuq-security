@@ -134,41 +134,7 @@ class InfoCheck extends React.Component{
                     data.push(statics[i]);
                 }
             }
-            this.onSelectChange(index,data);
-
-            // if(index.length==selectedRowKeys.length&&index.length){
-            //     this.onSelectChange([],[]);
-            // }else{
-                // 取消选择
-                // if(index.length==selectedRowKeys.length&&index.length){
-                //    let len = index.length;
-                //    let flag = 1;
-                //    for(let i = 0; i<len ;i++){
-                //        if(selectedData[i].key!=data[i].key){
-                //           flag = 0; 
-                //        }
-                //    }
-                //    if(flag){
-                //       this.onSelectChange([],[]); // 直接把当前页面清空
-                //    }else{
-                       
-                //    }
-                // }
-            //     if(current==n){ //在最后一页
-            //         for(let i = statics.length-1;i>=statics.length-m;i--){
-            //           index.push(statics[i].key);
-            //           data.push(statics[i]);
-            //         //   console.log(statics[i]);
-            //         }
-            //     }
-            //    else if(current<n){
-            //         for(let i =(current-1)*10;i<current*10;i++){
-            //             index.push(statics[i].key);
-            //             data.push(statics[i]);
-            //         }
-            //     }
-            //     this.onSelectChange(index,data);
-            // }   
+            this.onSelectChange(index,data);  
        }  
    }
    componentDidMount(){
@@ -194,8 +160,6 @@ class InfoCheck extends React.Component{
                         })
                         value1 = JSON.parse(JSON.stringify(value1).replace(/id/g,"key"));
                         value2 = JSON.parse(JSON.stringify(value2).replace(/id/g,"key"));
-                         // 把id换成key，避免error
-                        // value3 = value2.concat(value1); //把没通过的数据放在通过的数据的前面
                     }
                     this.setState({
                         statics:value2,
@@ -204,7 +168,7 @@ class InfoCheck extends React.Component{
         },1000)
      }else{
         message.info('登录令牌已失效，请重新登录');
-        this.props.history.push(`/checklogin`); // 如果token过期了的话或者没有token直接让他跳转回去登录界面
+        this.props.history.push(`/checklogin`); 
     }
     }
     render(){ 
@@ -216,10 +180,6 @@ class InfoCheck extends React.Component{
                 disabled: record.flag
             }),
         };
-        // console.log(this.state);
-         // console.log(this.props);
-         // console.log(value1); // value1指的是通过了审核的数据
-        // console.log(value2);  // value2是没有通过审核的数据
         return(
             <Fragment>
                

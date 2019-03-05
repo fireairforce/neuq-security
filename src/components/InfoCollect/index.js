@@ -4,32 +4,10 @@ import { Form ,Cascader, Input, Button,Modal} from 'antd';
 import { connect } from 'dva';
 import verity from '../../utils/regex';
 import Options from '../../utils/options';
-import { Redirect } from 'dva/router';
-
-// import axios from 'axios';
 
 const FormItem = Form.Item;
 
 class InfoCollect extends React.Component{
-    // componentDidMount(){
-    //     const ids = [146]
-    //     const data = { ids }
-    //     axios.post('http://neuqsecurity.lyzwhh.top/pass/getQRcode',{
-    //         data
-    //     },{
-    //         headers:{token:'71ae0a939adec0ea62a32d0ca2ba6262'}
-    //     }).then(res=>{
-    //         var blob = new Blob([res.data],{type: res.headers['content-type']});
-    //         var downloadElement = document.createElement('a');
-    //         var href = window.URL.createObjectURL(blob); //创建下载的链接
-    //         downloadElement.href = href;
-    //         downloadElement.download = 'QRCode.zip'; //下载后文件名
-    //         document.body.appendChild(downloadElement);
-    //         downloadElement.click(); //点击下载
-    //         document.body.removeChild(downloadElement); //下载完成移除元素
-    //         window.URL.revokeObjectURL(href); //释放掉blob对象
-    //     })
-    // }
     state={
         loading:false,
         submitted:false,
@@ -46,13 +24,11 @@ class InfoCollect extends React.Component{
             phone:dh,
             relation:gx
         }
-        // console.log(content);
         dispatch({
             type:'apply/handleApply',
             payload: content
         })
         setTimeout(() =>{
-            // console.log(this.props.apply.value);
             this.setState({loading:false})
             const value = this.props.apply.value;
             if(value){
@@ -75,11 +51,8 @@ class InfoCollect extends React.Component{
     render(){
         const {getFieldDecorator} = this.props.form;
         const formItemLayout = {labelCol: {xs: {span: 24},sm: {span: 8}},wrapperCol: {xs: {span: 24},sm: {span: 12}} }
-        // console.log(document.body.scrollWidth);
-       
-        return(
+        return (
           <Fragment>
-              {document.body.scrollWidth<400?<Redirect to="/mobile" />:null}
               <div className={styles.container}>
                 <div className={styles.wrapper}>
                     <div className={styles.content}></div>

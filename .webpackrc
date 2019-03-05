@@ -1,4 +1,4 @@
-{
+{ 
   "extraBabelPlugins": [
     ["import", {
       "libraryName": "antd",

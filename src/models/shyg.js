@@ -1,26 +1,9 @@
-import { getpassList,getfailList,passExamin,passReject} from '../services/req';
-import { message } from 'antd';
+import { passExamin,passReject} from '../services/req';
 
 export default {
     namespace: "shyg",
     state:{},
     effects:{
-        *getpassList({payload},{call,put}){
-            // console.log(window.localStorage.token);
-            const response = yield call(getpassList);
-            // console.log(response);
-            yield put({
-                type: 'savedata1',
-                payload: response
-             })
-        },
-        *getfailList({payload},{call,put}){
-            const resopnse = yield call(getfailList);
-            yield put({
-                type:'savedata2',
-                payload: resopnse
-            })
-        },
         *handlepassList({payload},{call,put}){
            const resopnse = yield call(passExamin,payload);
            if(resopnse.code===0){
@@ -32,14 +15,6 @@ export default {
            if(resopnse.code===0){
             window.location.href = window.location.href;   
            }
-        }
-    },
-    reducers:{
-        savedata1(state,action){
-            return {...state,value:action.payload}
-        },
-        savedata2(state,action){
-            return {...state,content:action.payload}
         }
     }
 }

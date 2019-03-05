@@ -4,6 +4,9 @@ import styles from './index.less';
 import columns from '../../utils/header';
 import { Form,Select,Button,Table,Modal,message } from 'antd';
 import HeaderTwo from '../../layout/headerTwo';
+import request from '../../utils/request'
+import API from '../../config/api'
+
 const FormItem = Form.Item;
 const Option = Select.Option;
 let value1=[],value2=[],data=[],index=[];
@@ -39,15 +42,6 @@ class InfoCheck extends React.Component{
               this.removeDuplicatedItem(selectedRows)
             } 
         );
-       
-      }
-      // 获取所有申请人的数据
-      getdata = (params,data) => {
-        const { dispatch } = this.props;
-        dispatch({
-            type:`shyg/${params}`,
-            payload:data
-        })
       }
    // 获取到那些没有通过审核的数据放在列表里面
     getFail = () =>{
@@ -86,9 +80,6 @@ class InfoCheck extends React.Component{
                         type:`shyg/${params}`,
                         payload:pass
                     })
-                    setTimeout(()=>{
-                        window.location.href = window.location.href;
-                      },1000)
                   }
                 })
             }else{
@@ -108,7 +99,7 @@ class InfoCheck extends React.Component{
                 title:'提示',
                 content:'请您选择一个用户'
             })
-            return;
+        return;
         }
        
     }
@@ -138,38 +129,50 @@ class InfoCheck extends React.Component{
        }  
    }
    componentDidMount(){
-       if(localStorage.token){ //当token存在的时候进行请求
-        this.getdata('getpassList'); 
-        this.getdata('getfailList');
-        setTimeout(()=>{
-            if((this.props.shyg.content||this.props.shyg.value)&&(this.props.shyg.content.code==="0"||this.props.shyg.value.code==="0")){
-                    let a = this.props.shyg.value?this.props.shyg.value.data:[]; // 通过的数据
-                    let b = this.props.shyg.content?this.props.shyg.content.data:[];  //没有通过的数据
-                    a.map((item)=>(
-                        value1.push(Object.assign({},item,{flag:true})) // 往value1里面新增一个属性用于禁选的判断
-                    ))
-                    b.map((item)=>(
-                        value2.push(Object.assign({},item,{flag:false}))
-                    ))
-                    if(value1.length&&value2.length){
-                        value1.sort((a,b)=>{
-                            return b.id-a.id; // 对通过的数据按照时间的近到远的排序
-                        })
-                        value2.sort((a,b)=>{
-                            return b.id-a.id;　// 对还没有审核的数据按照近到远的排序
-                        })
-                        value1 = JSON.parse(JSON.stringify(value1).replace(/id/g,"key"));
-                        value2 = JSON.parse(JSON.stringify(value2).replace(/id/g,"key"));
-                    }
-                    this.setState({
-                        statics:value2,
-                    }) 
+       if(!localStorage.token){
+         message.info('登录令牌已失效，请重新登录');
+         this.props.history.push(`/checklogin`); 
+       }
+
+       request({
+        url: API.passedList, // 没有通过的数据请求
+        method: 'get',
+        token:true
+        }).then(res=>{
+            if(res.data.length){
+                let a = [];
+                res.data.map(item=>(
+                a.push(Object.assign({},item,{flag:false}))
+                ))
+                a.sort((a,b)=>{
+                return b.id - a.id
+                })
+                a = JSON.parse(JSON.stringify(a).replace(/id/g,"key"));
+                this.setState({
+                statics:[...this.state.statics,...a]
+                    },()=>{
+                    value2 =a
+                })
             }
-        },1000)
-     }else{
-        message.info('登录令牌已失效，请重新登录');
-        this.props.history.push(`/checklogin`); 
-    }
+        })
+
+       request({
+        url: API.passCheckedlist,
+        method: 'get',
+        token:true
+        }).then(res=>{
+            if(res.data.length){
+                let a = [];
+                res.data.map(item=>(
+                   a.push(Object.assign({},item,{flag:true}))
+                ))
+                a.sort((a,b)=>{
+                  return b.id - a.id
+                })
+                a = JSON.parse(JSON.stringify(a).replace(/id/g,"key"));
+                value1 = a;
+            }
+        })
     }
     render(){ 
         const { selectedRowKeys,statics,current } = this.state;
@@ -180,9 +183,11 @@ class InfoCheck extends React.Component{
                 disabled: record.flag
             }),
         };
+        console.log(value1);
+        console.log(value2);
+        // console.log(statics);
         return(
-            <Fragment>
-               
+            <Fragment> 
                <div className={styles.wrapper}>
                     <HeaderTwo />
                     <h1 className={styles.header2}>信息审核</h1>
@@ -221,7 +226,6 @@ class InfoCheck extends React.Component{
                                 pageSize:10,
                                 defaultPageSize:10,
                                 current:current,
-                                // showSizeChanger:true,
                                 onChange:(page,pageSize)=>{
                                     this.setState({
                                         current:page,
@@ -238,4 +242,4 @@ class InfoCheck extends React.Component{
         )
     }
 }
-export default connect(({ shyg }) => ({ shyg }))(Form.create()(InfoCheck));
+export default connect(({ shyg }) => ({ shyg }))(InfoCheck);

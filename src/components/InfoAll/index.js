@@ -5,6 +5,8 @@ import { connect } from 'dva';
 import columns from '../../utils/header';
 import HeaderTwo from '../../layout/headerTwo';
 import Options from '../../utils/options';
+import request from '../../utils/request'
+import API from '../../config/api'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -13,17 +15,11 @@ class InfoAll extends React.Component{
     state={
         statics:[],
         selectedRowKeys:[],
-        selectedData:[],
+        selectedRows:[],
     };
-    getdata = (params) => {
-       const {dispatch} = this.props;
-       dispatch({
-           type:`xxhz/${params}`,
-           payload:''
-        })
-    }
+  
     getCode = () =>{
-        let item = this.state.selectedData;
+        let item = this.state.selectedRows;
         const {dispatch} = this.props;
         let ids =[];
         if(item.length){
@@ -31,7 +27,6 @@ class InfoAll extends React.Component{
                 ids.push(item[i].key);
             }
             let pass = ids.join('+')
-            // console.log(pass);
             dispatch({
                 type:'xxhz/handleCode',
                 payload:pass
@@ -46,64 +41,57 @@ class InfoAll extends React.Component{
     }
     // 信息筛选
     onChoice = (type) =>{ 
-        // const { statics } = this.state;
         if(value1.length){            
             this.setState({
                 statics:value1.filter(v=>v.department===value2[type])
             })
         }
-       
     }
+
     componentDidMount(){
-        this.getdata("getpassList");
-        if(localStorage.token){
-            setTimeout(()=>{
-                const { xxhz } = this.props;
-                if(localStorage.token){
-                  value1 = xxhz.value.data;
-                  if(value1.length){
-                    value1.sort(function(a,b){
-                        return b.id - a.id;  //对里面的数据进行一个时间的从最新到后面的排序
-                    })
-                    value1 = JSON.parse(JSON.stringify(value1).replace(/id/g,"key"));
-                    this.setState({
-                        statics:value1
-                    })
-                }
-              }
-            },1000)
-      }else{
-        message.info('登录令牌已失效，请重新登录');
-        this.props.history.push(`/checklogin`); // 如果token过期了的话或者没有token直接让他跳转回去登录界面
-      }
-      Options.map(v=>(
-          value2[v.type]=v.value
-      ));
+        if(!localStorage.token){
+            message.info('登录令牌已失效，请重新登录');
+            this.props.history.push(`/checklogin`); // 如果token过期了的话或者没有token直接让他跳转回去登录界面
+        }
+        request({
+            url: API.passCheckedlist,
+            method: 'get',
+            token:true
+        }).then(res=>{
+            if(res.data.length){
+                res.data.sort(function(a,b){
+                    return b.id - a.id;  //对里面的数据进行一个时间的从最新到后面的排序
+                })
+                res.data = JSON.parse(JSON.stringify(res.data).replace(/id/g,"key"));
+            }
+            this.setState({
+                statics:res.data
+            },()=>{
+                value1 = res.data
+            })
+        })
+        Options.map(v=>(
+           value2[v.type]=v.value
+        ));
     }
     // 对数据的选择函数
     onSelectChange = (selectedRowKeys,selectedRows) =>{
-        let a = [];
-        while(selectedRows.length){
-          a.push(selectedRows.pop());
-        }
-        // console.log(a);
-        this.setState({
+        // console.log(selectedRowKeys,selectedRows);
+        this.setState({ 
             selectedRowKeys,
-            selectedData:a
+            selectedRows
         })
     }
     render(){
         const pagination = {
             pageSize: 10,
           };
-        const {getFieldDecorator} = this.props.form;
         const {statics,selectedRowKeys} = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
           };
-        // console.log(this.props);
-          return(
+        return(
             <Fragment>
                 
                 <div className={styles.wrapper}>
@@ -148,5 +136,5 @@ class InfoAll extends React.Component{
         )
     }
 }
-export default connect(({ xxhz }) => ({ xxhz }))(Form.create()(InfoAll));
+export default connect(({ xxhz }) => ({ xxhz }))(InfoAll);
 

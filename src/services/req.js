@@ -12,19 +12,6 @@ const handleLogin = (data) => request({
     method: 'post',
     data
 }) 
-// 获取已经被审核的pass列表
-const getpassList = () => request({
-    url: API.passCheckedlist,
-    method: 'get',
-    token:true
-   
-})
-// 获取未审核的pass申请表
-const getfailList = () =>request({
-    url: API.passedList,
-    method: 'get',
-    token:true
-})
 // 提交通过申请
 const passExamin = (data) => request({
     url: API.passExamine,
@@ -47,4 +34,4 @@ const handleCode = (data) => request({
     data
 })
 
-export { handleApply, handleLogin,getpassList,getfailList,passExamin,passReject,handleCode }
+export { handleApply, handleLogin,passExamin,passReject,handleCode }

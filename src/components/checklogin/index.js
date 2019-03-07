@@ -6,8 +6,16 @@ const FormItem = Form.Item;
 
 class CheckLogin extends React.Component{
     state={} 
-    handleSubmit = () =>{
-        let value = this.props.form.getFieldsValue();
+    handleSubmit = (e) =>{
+        e.preventDefault()
+        let value = this.props.form.validateFields((err, values) => {
+            if (!err) {
+             return values
+            }
+          })
+        if(!Object.values(value).length){
+            return
+        }
         const content={
             id:value.zh,
             password:value.mm
@@ -17,9 +25,6 @@ class CheckLogin extends React.Component{
            type:'shdl/handleLogin',
            payload:content
         })
-        // setTimeout(()=>{
-        //     console.log(this.props.shdl.value);
-        // },1000)
     }
     render(){
         const {getFieldDecorator} = this.props.form;

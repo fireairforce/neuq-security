@@ -183,9 +183,6 @@ class InfoCheck extends React.Component{
                 disabled: record.flag
             }),
         };
-        console.log(value1);
-        console.log(value2);
-        // console.log(statics);
         return(
             <Fragment> 
                <div className={styles.wrapper}>

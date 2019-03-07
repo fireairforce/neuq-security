@@ -12,14 +12,22 @@ class InfoCollect extends React.Component{
         loading:false,
         submitted:false,
     }
-    handleSubmit = () =>{
-        // this.setState({ loading:true })
-        let value = this.props.form.getFieldsValue();
-        const {xm,bm,cp,dh,gx}=value;
-        const {dispatch} = this.props;
+    handleSubmit = (e) =>{
+        e.preventDefault();
+        let value = {}
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+             value = values
+            }
+          })
+        if(!Object.values(value).length){
+            return
+        }
+        const {xm,bm=[],cp,dh,gx}= value
+        const { dispatch } = this.props
         const content = {
             name:xm,
-            department:bm[0],
+            department:bm.join(""),
             car_number:cp,
             phone:dh,
             relation:gx
@@ -44,6 +52,10 @@ class InfoCollect extends React.Component{
                             </div>
                           ),
                     })
+                }else if(value.code ==="2001"){
+                    Modal.info({
+                        title: value.message,
+                    })
                 }
             }
         },2000)
@@ -62,7 +74,8 @@ class InfoCollect extends React.Component{
                     <p className={styles.header2}>申请出行证</p>
                 </div>
                 <div className={styles.content2}>
-                <Form>
+                <Form
+                >
                     <FormItem
                     label='姓名'
                     {...formItemLayout}
@@ -130,8 +143,8 @@ class InfoCollect extends React.Component{
                 <Button
                     type="primary"
                     htmlType="submit"
-                    className="login-form-button"
                     onClick={this.handleSubmit}
+                    className="login-form-button"
                     style={{width: '15vw' }}
                     loading={this.state.loading}
                     disabled={this.state.submitted}

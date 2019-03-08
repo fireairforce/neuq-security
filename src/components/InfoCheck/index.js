@@ -105,6 +105,7 @@ class InfoCheck extends React.Component{
     }
 //批量选择操作,可以考虑对这边的
    selectmore = () =>{
+       
        const { current,statics } = this.state;         
        if(!statics.length){
         Modal.info({
@@ -128,6 +129,7 @@ class InfoCheck extends React.Component{
             this.onSelectChange(index,data);  
        }  
    }
+
    componentDidMount(){
        if(!localStorage.token){
          message.info('登录令牌已失效，请重新登录');

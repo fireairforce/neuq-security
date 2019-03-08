@@ -8,9 +8,10 @@ class CheckLogin extends React.Component{
     state={} 
     handleSubmit = (e) =>{
         e.preventDefault()
-        let value = this.props.form.validateFields((err, values) => {
+        let value = {}
+        this.props.form.validateFields((err, values) => {
             if (!err) {
-             return values
+             value = values
             }
           })
         if(!Object.values(value).length){

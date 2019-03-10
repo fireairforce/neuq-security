@@ -8,9 +8,10 @@ class CheckLogin extends React.Component{
     state={} 
     handleSubmit = (e) =>{
         e.preventDefault()
-        let value = this.props.form.validateFields((err, values) => {
+        let value = {}
+        this.props.form.validateFields((err, values) => {
             if (!err) {
-             return values
+             value = values
             }
           })
         if(!Object.values(value).length){
@@ -31,7 +32,6 @@ class CheckLogin extends React.Component{
         const formItemLayout = {labelCol: {xs: {span: 24},sm: {span: 6}},wrapperCol: {xs: {span: 24},sm: {span: 12}} };
         return(
             <Fragment>
-                {/* <Header /> */}
                 <div className={styles.container}>
                    <div className={styles.wrapper}>
                      <div className={styles.content}></div>

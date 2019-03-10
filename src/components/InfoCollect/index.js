@@ -13,7 +13,7 @@ class InfoCollect extends React.Component{
         submitted:false,
     }
     handleSubmit = (e) =>{
-        e.preventDefault();
+        e.preventDefault()
         let value = {}
         this.props.form.validateFields((err, values) => {
             if (!err) {

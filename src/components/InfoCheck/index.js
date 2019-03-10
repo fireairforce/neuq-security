@@ -52,6 +52,7 @@ class InfoCheck extends React.Component{
     }
    // 获取那些通过审核的数据放在列表里面
     getPass = () =>{
+        // 注释部分用于对已通过的数据进行勾选
         let trans2 = [];
         for(var i in value1){
             trans2[i]= value1[i].key;
@@ -71,6 +72,7 @@ class InfoCheck extends React.Component{
             }
             const pass = { ids }
             // console.log(pass);
+            console.log(item);
             if(params==='handlefailList'){
                　Modal.confirm({
                    title:'您确定要删除这些信息吗',
@@ -105,6 +107,7 @@ class InfoCheck extends React.Component{
     }
 //批量选择操作,可以考虑对这边的
    selectmore = () =>{
+       
        const { current,statics } = this.state;         
        if(!statics.length){
         Modal.info({
@@ -128,6 +131,7 @@ class InfoCheck extends React.Component{
             this.onSelectChange(index,data);  
        }  
    }
+
    componentDidMount(){
        if(!localStorage.token){
          message.info('登录令牌已失效，请重新登录');
@@ -195,9 +199,10 @@ class InfoCheck extends React.Component{
                                    <FormItem>
                                         {
                                             <Select
-                                                style={{width:100}}
+                                                style={{width:"160"}}
                                                 placeholder="未通过审核"
                                                 defaultValue="0"
+                                                isRequired="0"
                                             >
                                                 <Option value="0" onClick={this.getFail}>未通过审核</Option>
                                                 <Option value="1" onClick={this.getPass}>已通过审核</Option>

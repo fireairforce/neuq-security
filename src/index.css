@@ -1,5 +1,5 @@
 
-html, body, :global(#root) {
+html, body :global(#root) {
   height: 100%;
   font-size: 100%;
   font-weight: inherit;
@@ -9,3 +9,4 @@ html, body, :global(#root) {
   border: 0;
   background-color: transparent
 }
+

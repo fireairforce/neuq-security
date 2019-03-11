@@ -2,7 +2,8 @@ import { passExamin,passReject} from '../services/req';
 
 export default {
     namespace: "shyg",
-    state:{},
+    state:{
+    },
     effects:{
         *handlepassList({payload},{call,put}){
            const resopnse = yield call(passExamin,payload);

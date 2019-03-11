@@ -3,7 +3,9 @@ import {message} from 'antd';
 import { routerRedux } from 'dva/router';
 export default {
     namespace: "shdl",
-    state:{},
+    state:{
+        
+    },
     effects:{
         *handleLogin({payload},{call,put}){
              const response = yield call(handleLogin,payload);

@@ -2,7 +2,8 @@ import { handleApply } from '../services/req';
 import {message} from 'antd';
 export default {
     namespace: "apply",
-    state:{},
+    state:{
+    },
     effects:{
         *handleApply({payload},{call,put}){
              const response = yield call(handleApply,payload); 

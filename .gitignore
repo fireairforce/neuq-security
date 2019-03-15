@@ -1,17 +1,9 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-
-# production
-/dist
-/yarn.lock
-
-pushConfig.js
-
-# misc
+dist
+node_modules
+yarn.lock
+npm-debug.log
+.idea/
 .DS_Store
-npm-debug.log*
-./secret.js
-
- 
+.vscode
+package-lock.json
+pushConfig.js

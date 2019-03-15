@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import {  Col, Form, Input,Row,Cascader } from 'antd'
-
 import { Modal,Button } from 'antd-mobile'
-import 'antd-mobile/dist/antd-mobile.css';
 import verity from '../../utils/regex'
 import Options from '../../utils/options'
 import styles from './index.less'
@@ -20,10 +18,17 @@ class Collect extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-
   async handleSubmit(){
+      let value = {}
+      this.props.form.validateFields((err, values) => {
+          if (!err) {
+           value = values
+          }
+        })
+      if(!Object.values(value).length){
+          return
+      }
       this.setState({ loading:true })
-      let value = this.props.form.getFieldsValue();
       const {xm,bm,cp,dh,gx}= value ;
       const content = {
         name:xm,
@@ -38,7 +43,7 @@ class Collect extends Component {
         setTimeout(() =>{
           this.setState({loading:false})
           if(res.status===200&&res.data.code==="0"){
-                  this.setState({submitted:true,showModal:true})
+                this.setState({submitted:true,showModal:true})
           }
       },2000)
   }
@@ -58,7 +63,7 @@ class Collect extends Component {
     return (
        <div className={styles.wrapper}>
         <div className={styles.header}>
-           <h2>东大安保</h2>
+           <img src="http://wdlj.zoomdong.xin/mobile_logo.PNG" alt="logo" style={{width:'340px',height:"140px"}}/>
         </div>
         <Form >
                  <FormItem
@@ -138,7 +143,7 @@ class Collect extends Component {
               <Col xs={{span: 24}} sm={{span: 12, offset: 6}}>
                 <Button
                   type='primary'
-                  htmlType="submit"
+                  // htmlType="submit"
                   onClick={this.handleSubmit}
                   loading={this.state.loading}
                   disabled={this.state.submitted}

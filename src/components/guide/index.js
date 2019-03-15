@@ -6,7 +6,6 @@ export default class Guide extends React.Component{
     constructor(props){
         super(props)
         this.state={
-
         }
         this.handleClick = this.handleClick.bind(this);
     }
@@ -26,7 +25,6 @@ export default class Guide extends React.Component{
             margin:'0 auto',
             pointer:'cursor'
         }
-        console.log(this.props);
         return(
             <Fragment>
              <div className={styles.wrapper}>

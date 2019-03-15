@@ -47,7 +47,6 @@ class InfoAll extends React.Component{
             })
         }
     }
-
     componentDidMount(){
         if(!localStorage.token){
             message.info('登录令牌已失效，请重新登录');
@@ -58,16 +57,16 @@ class InfoAll extends React.Component{
             method: 'get',
             token:true
         }).then(res=>{
-            if(res.data.length){
-                res.data.sort(function(a,b){
+            if(res.data.data.length){
+                res.data.data.sort(function(a,b){
                     return b.id - a.id;  //对里面的数据进行一个时间的从最新到后面的排序
                 })
-                res.data = JSON.parse(JSON.stringify(res.data).replace(/id/g,"key"));
+                res.data.data = JSON.parse(JSON.stringify(res.data.data).replace(/id/g,"key"));
             }
             this.setState({
-                statics:res.data
+                statics:res.data.data
             },()=>{
-                value1 = res.data
+                value1 = res.data.data
             })
         })
         Options.map(v=>(
@@ -106,6 +105,7 @@ class InfoAll extends React.Component{
                                             style={{width:"200px"}}
                                             placeholder="全部部门"
                                             defaultValue="0"
+                                            isRequired="0"
                                         >
                                           <Option value="0" onClick={()=>{this.setState({statics:value1})}}>全部</Option>
                                            {

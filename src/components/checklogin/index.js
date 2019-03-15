@@ -38,6 +38,7 @@ class CheckLogin extends React.Component{
                    </div>
                    <div className={styles.header1}>
                       <h1>东大安保</h1>
+                      <h1 style={{margin:'30px 0'}}>登录系统</h1>
                    </div>
                    <div className={styles.content1}>
                        <Form>
@@ -68,7 +69,7 @@ class CheckLogin extends React.Component{
 
                          <Button 
                             type="primary" 
-                            htmlType="submit" 
+                            // htmlType="submit" 
                             className="login-form-button" 
                             onClick={this.handleSubmit}
                             style={{width: '15vw' }}

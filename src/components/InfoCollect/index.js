@@ -142,7 +142,7 @@ class InfoCollect extends React.Component{
 
                 <Button
                     type="primary"
-                    htmlType="submit"
+                    // htmlType="submit"
                     onClick={this.handleSubmit}
                     className="login-form-button"
                     style={{width: '15vw' }}

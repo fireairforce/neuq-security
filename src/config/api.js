@@ -8,8 +8,8 @@ export default {
     passReject: 'pass/reject',
 
     // 两端应用
-    passCheckedlist: '/pass/getcheckedpasses/999/0',
-    passedList: '/pass/getpasses/999/0',
+    passCheckedlist: '/pass/getcheckedpasses',
+    passedList: '/pass/getpasses',
     
     // app应用
     passSearch: 'pass/search',

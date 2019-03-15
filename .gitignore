@@ -8,9 +8,10 @@
 /yarn.lock
 
 pushConfig.js
-secret.js
+
 # misc
 .DS_Store
 npm-debug.log*
+./secret.js
 
  

@@ -2,8 +2,9 @@
 const webpack = require('webpack')
 const QiniuPlugin = require('qiniu-webpack-plugin')
 const config = require('./secret')
+const path = require('path')
 module.exports = function (webpackConfig, env) {
-  if (env !== 'production') {} else {
+  if (env !== 'production') {} else { 
     webpackConfig.plugins.push(
       new webpack.optimize.UglifyJsPlugin({
         compress: {
@@ -16,9 +17,10 @@ module.exports = function (webpackConfig, env) {
         ACCESS_KEY: config.ACCESS_KEY,
         SECRET_KEY: config.SECRET_KEY,
         bucket: 'zoomdong',
-        path: 'wd/'
+        path: '/'
       })
     )
   }
+
   return webpackConfig
 }

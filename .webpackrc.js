@@ -1,21 +1,42 @@
-module.exports = {
+const path = require('path')
+export default {
   entry: 'src/index.js',
-  hash:true,
-  extraBabelPlugins: [
-    ["import", { libraryName: "antd-mobile", libraryDirectory: "es", style: true }],
-    ["import", { libraryName: "antd", "libraryDirectory": "lib",style:true} ,"ant"],
-  ],
+  // disableCSSModules: true,
+  ignoreMomentLocale: true,
+  // theme: './theme.config.js',
+  hash: true,
+  html:{
+    template:"./src/index.ejs"
+  },
   env: {
     development: {
-      extraBabelPlugins: ['dva-hmr'],
+      extraBabelPlugins: [
+        'dva-hmr',
+        ["import", { libraryName: "antd-mobile", libraryDirectory: "es", style: true }],
+        ["import", { libraryName: "antd", "libraryDirectory": "lib",style:true} ,"ant"],
+      ],
+      autoprefixer: {
+        browsers: [
+          'iOS >= 8', 'Android >= 4'
+        ]
+      }
     },
     production: {
-      publicPath: 'http://wdlj.zoomdong.xin/wd/',
-      ignoreMomentLocale: true,
-      exclude:[/node_modules/],
+       
+      publicPath: 'http://wdlj.zoomdong.xin/',
+      extraBabelPlugins: [
+        'dva-hmr',
+        ["import", { libraryName: "antd-mobile", libraryDirectory: "es", style: true }],
+        ["import", { libraryName: "antd", "libraryDirectory": "lib",style:true} ,"ant"],
+      ],
+      autoprefixer: {
+        browsers: [
+          'iOS >= 8', 'Android >= 4'
+        ]
+      },
       define: {
-        "__CDN__": "http://wdlj.zoomdong.xin/wd/"
+        __CDN__: "http://wdlj.zoomdong.xin/"
       }
     }
-  },
+  }
 }

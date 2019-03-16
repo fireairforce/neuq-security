@@ -63,7 +63,7 @@ class Collect extends Component {
     return (
        <div className={styles.wrapper}>
         <div className={styles.header}>
-           <img src="http://wdlj.zoomdong.xin/mobile_logo.PNG" alt="logo" style={{width:'340px',height:"140px"}}/>
+           <h2>出入证申请</h2>
         </div>
         <Form >
                  <FormItem

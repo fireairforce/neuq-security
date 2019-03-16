@@ -72,7 +72,7 @@ class InfoCheck extends React.Component{
             }
             const pass = { ids }
             // console.log(pass);
-            console.log(item);
+            // console.log(item);
             if(params==='handlefailList'){
                　Modal.confirm({
                    title:'您确定要删除这些信息吗',
@@ -107,7 +107,6 @@ class InfoCheck extends React.Component{
     }
 //批量选择操作,可以考虑对这边的
    selectmore = () =>{
-       
        const { current,statics } = this.state;         
        if(!statics.length){
         Modal.info({
@@ -179,6 +178,7 @@ class InfoCheck extends React.Component{
         })
     }
     render(){ 
+        console.log(this.props);
         const { selectedRowKeys,statics,current } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -244,4 +244,4 @@ class InfoCheck extends React.Component{
         )
     }
 }
-export default connect(({ shyg }) => ({ shyg }))(InfoCheck);
+export default connect(({ shyg,shdl }) => ({ shyg,shdl }))(InfoCheck);

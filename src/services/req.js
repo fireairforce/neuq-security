@@ -12,6 +12,19 @@ const handleLogin = (data) => request({
     method: 'post',
     data
 }) 
+// 获取未被审核的数据
+const getUnckeckedList = () =>request({
+    url:API.passedList,
+    method:'get',
+    token:true
+})
+
+// 获取被审核的数据
+const getCheckedList = () =>request({
+    url:API.passCheckedlist,
+    method:'get',
+    token:true
+})
 // 提交通过申请
 const passExamin = (data) => request({
     url: API.passExamine,
@@ -19,6 +32,7 @@ const passExamin = (data) => request({
     token:true,
     data,
 })
+
 // 提交拒绝申请
 const passReject = (data) => request({
     url: API.passReject,
@@ -34,4 +48,4 @@ const handleCode = (data) => request({
     data
 })
 
-export { handleApply, handleLogin,passExamin,passReject,handleCode }
+export { handleApply, handleLogin,passExamin,passReject,handleCode ,getCheckedList,getUnckeckedList}

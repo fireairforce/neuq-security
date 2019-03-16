@@ -5,9 +5,7 @@ export default {
     state:{},
     effects:{
         *handleCode({payload},{call,put}){
-            // console.log(payload);
-            const res = yield call(handleCode,payload);
-            // console.log(res);
+            const res = yield call(handleCode,payload)
             yield put({
                 type:'getcode',
                 payload:res

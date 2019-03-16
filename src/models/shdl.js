@@ -3,37 +3,30 @@ import {message} from 'antd';
 import { routerRedux } from 'dva/router';
 export default {
     namespace: "shdl",
-    state:{
-        data:[]
+    state: {
+       data:{}
     },
     effects:{
         *handleLogin({payload},{call,put}){
-             const response = yield call(handleLogin,payload);
-             if(response.code===0){
-                message.success("登录成功");
-                 localStorage.setItem("token",response.data.tokenStr);
+             const res = yield call(handleLogin,payload);
+             if(res.code===0){
+                 yield put({type:'update',payload:res})
+                 message.success("登录成功"); 
                  yield put(routerRedux.push('/infocheck'))
-                 //  if(response.data.role===1){
-                //     yield put(routerRedux.push("/infoall"));
-                //  }else if(response.data.role===0){
-                //     yield put(routerRedux.push("/infocheck"));
-                //  } 
-                }else if(response.code===302){
-                    message.error(response.message);
-                }else if(response.code===303){
-                    message.error(response.message);
-                }else if(response.code===304){
-                    message.error(response.message);
-                }  
-             yield put({
-                type:'codeReturn',
-                payload: response
-            })    
+                }else if(res.code===302){
+                    message.error(res.message);
+                }else if(res.code===303){
+                    message.error(res.message);
+                }else if(res.code===304){
+                    message.error(res.message);
+                }     
        }
     },
     reducers:{
-       codeReturn(state,action){
-           return {...state,data:action.payload.data}
-       }
+        update (state,{ payload }){
+            localStorage.setItem("token",payload.data.tokenStr)
+            localStorage.setItem("role",payload.data.role)
+            return { ...state, data:payload}
+        }
     }
 }

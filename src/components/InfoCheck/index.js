@@ -1,15 +1,15 @@
-import React, { Fragment } from 'react';
-import {connect} from 'dva';
-import styles from './index.less';
-import columns from 'utils/header';
-import { Form,Select,Button,Table,Modal,message } from 'antd';
-import HeaderTwo from 'layout/headerTwo';
+import React, { Fragment } from 'react'
+import {connect} from 'dva'
+import styles from './index.less'
+import columns from 'utils/header'
 import request from 'utils/request'
 import API from 'config/api'
-
-const FormItem = Form.Item;
-const Option = Select.Option;
-let value1=[],value2=[],data=[],index=[];
+import Options from 'utils/options'
+import { Form,Select,Button,Table,Modal,message } from 'antd'
+import HeaderTwo from 'layout/headerTwo'
+const FormItem = Form.Item
+const Option = Select.Option
+let value1=[],value2=[],data=[],index=[],school=[]
 class InfoCheck extends React.Component{
     // 把已经通过审核的数据搞的不能选择
     state={
@@ -136,50 +136,56 @@ class InfoCheck extends React.Component{
          message.info('登录令牌已失效，请重新登录');
          this.props.history.push(`/checklogin`); 
        }
+    //    request({
+    //     url: API.passedList, // 没有通过的数据请求
+    //     method: 'get',
+    //     token:true
+    //     }).then(res=>{
+    //         if(res.data.length){
+    //             let a = [];
+    //             res.data.map(item=>(
+    //             a.push(Object.assign({},item,{flag:false}))
+    //             ))
+    //             a.sort((a,b)=>{
+    //             return b.id - a.id
+    //             })
+    //             a = JSON.parse(JSON.stringify(a).replace(/id/g,"key"));
+    //             this.setState({
+    //             statics:[...this.state.statics,...a]
+    //                 },()=>{
+    //                 value2 =a
+    //             })
+    //         }
+    //     })
 
-       request({
-        url: API.passedList, // 没有通过的数据请求
-        method: 'get',
-        token:true
-        }).then(res=>{
-            if(res.data.length){
-                let a = [];
-                res.data.map(item=>(
-                a.push(Object.assign({},item,{flag:false}))
-                ))
-                a.sort((a,b)=>{
-                return b.id - a.id
-                })
-                a = JSON.parse(JSON.stringify(a).replace(/id/g,"key"));
-                this.setState({
-                statics:[...this.state.statics,...a]
-                    },()=>{
-                    value2 =a
-                })
-            }
-        })
-
-       request({
-        url: API.passCheckedlist,
-        method: 'get',
-        token:true
-        }).then(res=>{
-            if(res.data.length){
-                let a = [];
-                res.data.map(item=>(
-                   a.push(Object.assign({},item,{flag:true}))
-                ))
-                a.sort((a,b)=>{
-                  return b.id - a.id
-                })
-                a = JSON.parse(JSON.stringify(a).replace(/id/g,"key"));
-                value1 = a;
-            }
-        })
+    //    request({
+    //     url: API.passCheckedlist,
+    //     method: 'get',
+    //     token:true
+    //     }).then(res=>{
+    //         if(res.data.length){
+    //             let a = [];
+    //             res.data.map(item=>(
+    //                a.push(Object.assign({},item,{flag:true}))
+    //             ))
+    //             a.sort((a,b)=>{
+    //               return b.id - a.id
+    //             })
+    //             a = JSON.parse(JSON.stringify(a).replace(/id/g,"key"));
+    //             value1 = a;
+    //         }
+    //     })
+      this.props.dispatch({
+          type:'shyg/init'
+      })
     }
     render(){ 
-        console.log(this.props);
-        const { selectedRowKeys,statics,current } = this.state;
+        Options.map(v=>(
+            school[v.role] = v.value
+        ))
+        console.log(this.props)
+        const { CheckedList ,unCheckedList } = this.props.shyg
+        const { selectedRowKeys,statics } = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -187,11 +193,28 @@ class InfoCheck extends React.Component{
                 disabled: record.flag
             }),
         };
+        const pagination = {
+            pageSize:10,
+            total: 100 
+            // total:statics.length,
+            // pageSize:10,
+            // defaultPageSize:10,
+            // current:current,
+            // onChange:(page,pageSize)=>{
+            //     this.setState({
+            //         current:page,
+            //     })                        
+            // },
+            // showTotal: function () {  //设置显示一共几条数据
+            //     return '共 ' + statics.length + ' 条数据'; 
+            // }
+        }
+       
         return(
             <Fragment> 
                <div className={styles.wrapper}>
                     <HeaderTwo />
-                    <h1 className={styles.header2}>信息审核</h1>
+                    <h1 className={styles.header2}>{`${school[localStorage.role]} 信息审核`}</h1>
                     <div className={styles.content2}>
                         <Form layout="inline">
                                 <div className={styles.content3}>
@@ -223,20 +246,7 @@ class InfoCheck extends React.Component{
                             rowSelection={rowSelection}
                             columns={columns}
                             dataSource={statics}
-                            pagination={{
-                                total:statics.length,
-                                pageSize:10,
-                                defaultPageSize:10,
-                                current:current,
-                                onChange:(page,pageSize)=>{
-                                    this.setState({
-                                        current:page,
-                                    })                        
-                                },
-                                showTotal: function () {  //设置显示一共几条数据
-                                    return '共 ' + statics.length + ' 条数据'; 
-                                }
-                            }}
+                            pagination={pagination}
                             />
                         </div>
                </div>

@@ -1,5 +1,5 @@
-import request from '../utils/request';
-import API from '../config/api';
+import request from 'utils/request';
+import API from 'config/api';
 // 提交车辆申请
 const handleApply = (data) => request({
     url: API.passApply,

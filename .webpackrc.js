@@ -11,9 +11,20 @@ export default {
   env: {
     development: {
       extraBabelPlugins: [
-        'dva-hmr',
+        "dva-hmr",
         ["import", { libraryName: "antd-mobile", libraryDirectory: "es", style: true }],
         ["import", { libraryName: "antd", "libraryDirectory": "lib",style:true} ,"ant"],
+        ['babel-plugin-module-resolver',{
+            alias: {
+              components:"./src/components",
+              models:"./src/models",
+              utils:"./src/utils",
+              services:"./src/services",
+              layout:"./src/layout",
+              config:'./src/config'
+            },
+          },
+        ],
       ],
       autoprefixer: {
         browsers: [
@@ -22,12 +33,22 @@ export default {
       }
     },
     production: {
-       
       publicPath: 'http://wdlj.zoomdong.xin/',
       extraBabelPlugins: [
-        'dva-hmr',
+        "dva-hmr",
         ["import", { libraryName: "antd-mobile", libraryDirectory: "es", style: true }],
         ["import", { libraryName: "antd", "libraryDirectory": "lib",style:true} ,"ant"],
+        ['babel-plugin-module-resolver',{
+          alias: {
+            components:"./src/components",
+            models:"./src/models",
+            utils:"./src/utils",
+            services:"./src/services",
+            layout:"./src/layout",
+            config:'./src/config'
+          },
+        },
+      ],
       ],
       autoprefixer: {
         browsers: [

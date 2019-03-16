@@ -1,4 +1,4 @@
-import { handleApply } from '../services/req';
+import { handleApply } from 'services/req';
 import {message} from 'antd';
 export default {
     namespace: "apply",

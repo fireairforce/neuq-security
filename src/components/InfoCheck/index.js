@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import {connect} from 'dva';
 import styles from './index.less';
-import columns from '../../utils/header';
+import columns from 'utils/header';
 import { Form,Select,Button,Table,Modal,message } from 'antd';
-import HeaderTwo from '../../layout/headerTwo';
-import request from '../../utils/request'
-import API from '../../config/api'
+import HeaderTwo from 'layout/headerTwo';
+import request from 'utils/request'
+import API from 'config/api'
 
 const FormItem = Form.Item;
 const Option = Select.Option;

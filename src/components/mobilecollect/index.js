@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import {  Col, Form, Input,Row,Cascader } from 'antd'
 import { Modal,Button } from 'antd-mobile'
-import verity from '../../utils/regex'
-import Options from '../../utils/options'
+import verity from 'utils/regex'
+import Options from 'utils/options'
 import styles from './index.less'
 import axios from 'axios'
 const FormItem = Form.Item

@@ -1,4 +1,4 @@
-import { passExamin,passReject} from '../services/req';
+import { passExamin,passReject} from 'services/req';
 
 export default {
     namespace: "shyg",

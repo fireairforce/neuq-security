@@ -2,11 +2,11 @@ import React, { Fragment } from 'react';
 import styles from './index.less';
 import { Form,Button,Table,Select,message,Modal } from 'antd'
 import { connect } from 'dva';
-import columns from '../../utils/header';
-import HeaderTwo from '../../layout/headerTwo';
-import Options from '../../utils/options';
-import request from '../../utils/request'
-import API from '../../config/api'
+import columns from 'utils/header';
+import Options from 'utils/options';
+import request from 'utils/request'
+import API from 'config/api'
+import HeaderTwo from 'layout/headerTwo';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -92,7 +92,6 @@ class InfoAll extends React.Component{
           };
         return(
             <Fragment>
-                
                 <div className={styles.wrapper}>
                    <HeaderTwo />
                    <h1 className={styles.header2}>信息汇总</h1>

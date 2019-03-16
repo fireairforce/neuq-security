@@ -1,4 +1,4 @@
-import { getpassList,handleCode } from '../services/req';
+import { getpassList,handleCode } from 'services/req';
 
 export default {
     namespace:'xxhz',

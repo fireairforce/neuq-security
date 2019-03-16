@@ -1,5 +1,5 @@
 import axios from 'axios'
-import appConfig from './../config/app';
+import appConfig from 'config/app';
 
 const fetch = options => {
   let { method = 'get',data,url,token = false,headers={} } = options

@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import styles from './index.less';
 import { Form ,Cascader, Input, Button,Modal} from 'antd';
 import { connect } from 'dva';
-import verity from '../../utils/regex';
-import Options from '../../utils/options';
+import verity from 'utils/regex';
+import Options from 'utils/options';
 
 const FormItem = Form.Item;
 

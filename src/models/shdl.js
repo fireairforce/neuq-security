@@ -1,4 +1,4 @@
-import { handleLogin } from '../services/req';
+import { handleLogin } from 'services/req';
 import {message} from 'antd';
 import { routerRedux } from 'dva/router';
 export default {
@@ -9,7 +9,6 @@ export default {
     effects:{
         *handleLogin({payload},{call,put}){
              const response = yield call(handleLogin,payload);
-            //  console.log(response);
              if(response.code===0){
                  message.success("登录成功");
                  localStorage.setItem("token",response.data.tokenStr);

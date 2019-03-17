@@ -17,37 +17,23 @@ class InfoCheck extends React.Component{
         statics:[],
         selectedRows:[],
         current:1,
-        pagestatics:[]
+        pagestatics:[],      
+        page1:{},
+        page2:{}
     };
-    // 对数据进行去重
-    removeDuplicatedItem = arr =>{
-        for(var i = 0; i < arr.length-1; i++){
-            for(var j = i+1; j < arr.length; j++){
-                if(arr[i]==arr[j]){
-                   arr.splice(j,1);
-                   j--;//删除重复后，数组下标往前移动
-                }
-            }
-        }
-        return arr;
-    }
     // 数据的选择函数
     onSelectChange = (selectedRowKeys,selectedRows) => {
         this.setState({ 
             selectedRowKeys,
             selectedRows
-        },
-          ()=>{
-              this.removeDuplicatedItem(selectedRowKeys);
-              this.removeDuplicatedItem(selectedRows)
-            } 
-        );
+        });
       }
    // 获取到那些没有通过审核的数据放在列表里面
     getFail = () =>{
           this.setState({
               selectedRowKeys:[],       
-              statics:value2
+              statics:value2,
+              page:{}
            })        
     }
    // 获取那些通过审核的数据放在列表里面
@@ -105,98 +91,87 @@ class InfoCheck extends React.Component{
         }
        
     }
-//批量选择操作,可以考虑对这边的
-   selectmore = () =>{
-       const { current,statics } = this.state;         
-       if(!statics.length){
-        Modal.info({
-            title:'提示',
-            content:'当前数据列表为空,无法选择'
-        })
-       }else{
-            let m = statics.length%10; // m是多的数据
-            let n = Math.ceil(statics.length/10); // n是页数
-            if( current == n ){
-              for(let i = statics.length-1;i>=statics.length-m;i--){
-                  index.push(statics[i].key)
-                  data.push(statics[i]);
-              }
-            }else if(current<n){
-                for(let i =(current-1)*10;i<current*10;i++){
-                    index.push(statics[i].key);
-                    data.push(statics[i]);
-                }
-            }
-            this.onSelectChange(index,data);  
-       }  
-   }
+// //批量选择操作,可以考虑对这边的
+//    selectmore = () =>{
+//        const { current,statics } = this.state;         
+//        if(!statics.length){
+//         Modal.info({
+//             title:'提示',
+//             content:'当前数据列表为空,无法选择'
+//         })
+//        }else{
+//             let m = statics.length%10; // m是多的数据
+//             let n = Math.ceil(statics.length/10); // n是页数
+//             if( current == n ){
+//               for(let i = statics.length-1;i>=statics.length-m;i--){
+//                   index.push(statics[i].key)
+//                   data.push(statics[i]);
+//               }
+//             }else if(current<n){
+//                 for(let i =(current-1)*10;i<current*10;i++){
+//                     index.push(statics[i].key);
+//                     data.push(statics[i]);
+//                 }
+//             }
+//             this.onSelectChange(index,data);  
+//        }  
+//    }
 
    componentDidMount(){
        if(!localStorage.token){
          message.info('登录令牌已失效，请重新登录');
          this.props.history.push(`/checklogin`); 
        }
-    //    request({
-    //     url: API.passedList, // 没有通过的数据请求
-    //     method: 'get',
-    //     token:true
-    //     }).then(res=>{
-    //         if(res.data.length){
-    //             let a = [];
-    //             res.data.map(item=>(
-    //             a.push(Object.assign({},item,{flag:false}))
-    //             ))
-    //             a.sort((a,b)=>{
-    //             return b.id - a.id
-    //             })
-    //             a = JSON.parse(JSON.stringify(a).replace(/id/g,"key"));
-    //             this.setState({
-    //             statics:[...this.state.statics,...a]
-    //                 },()=>{
-    //                 value2 =a
-    //             })
-    //         }
-    //     })
-
-    //    request({
-    //     url: API.passCheckedlist,
-    //     method: 'get',
-    //     token:true
-    //     }).then(res=>{
-    //         if(res.data.length){
-    //             let a = [];
-    //             res.data.map(item=>(
-    //                a.push(Object.assign({},item,{flag:true}))
-    //             ))
-    //             a.sort((a,b)=>{
-    //               return b.id - a.id
-    //             })
-    //             a = JSON.parse(JSON.stringify(a).replace(/id/g,"key"));
-    //             value1 = a;
-    //         }
-    //     })
-      this.props.dispatch({
-          type:'shyg/init'
-      })
+       request({
+        url: API.passedList, // 没有通过的数据请求
+        method: 'get',
+        token:true
+        }).then(res=>{
+            if(res.data.data.length){
+                res.data.data.map(item=>(
+                    value2.push(Object.assign({}, item ,{ flag:false }))
+                ))
+                const { current_page,first_page_url,from,last_page,last_page_url,next_page_url,per_page,prev_page_url,to,total } = res.data
+                this.setState({
+                   statics:[...this.state.statics,...res.data.data],
+                   page1:{...this.state.page1,current_page,first_page_url,from,last_page,last_page_url,next_page_url,per_page,prev_page_url,to,total }
+                })
+            }
+        })
+       request({
+        url: API.passCheckedlist,
+        method: 'get',
+        token:true
+        }).then(res=>{
+            if(res.data.data.length){
+                res.data.data.map(item=>(
+                    value1.push(Object.assign({},item,{flag:true}))
+                ))
+                // console.log(res.data)
+                const { current_page,first_page_url,from,last_page,last_page_url,next_page_url,per_page,prev_page_url,to,total } = res.data
+                this.setState({
+                    page2:{...this.state.page2,current_page,first_page_url,from,last_page,last_page_url,next_page_url,per_page,prev_page_url,to,total }
+                })
+            }
+        })
     }
     render(){ 
         Options.map(v=>(
             school[v.role] = v.value
         ))
-        console.log(this.props)
-        const { CheckedList ,unCheckedList } = this.props.shyg
-        const { selectedRowKeys,statics } = this.state;
+        const { selectedRowKeys,statics } = this.state
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
             getCheckboxProps: record => ({
                 disabled: record.flag
             }),
-        };
+        }
+        console.log(this.state)
         const pagination = {
             pageSize:10,
-            total: 100 
-            // total:statics.length,
+            total: 100, 
+            total:statics.length,
             // pageSize:10,
             // defaultPageSize:10,
             // current:current,

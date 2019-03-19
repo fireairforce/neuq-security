@@ -9,7 +9,7 @@ import { Form,Select,Button,Table,Modal,message } from 'antd'
 import HeaderTwo from 'layout/headerTwo'
 const FormItem = Form.Item
 const Option = Select.Option
-let value1=[],value2=[],data=[],index=[],school=[]
+let value1=[],value2=[],school=[]
 class InfoCheck extends React.Component{
     // 把已经通过审核的数据搞的不能选择
     state={
@@ -22,6 +22,7 @@ class InfoCheck extends React.Component{
     };
     // 数据的选择函数
     onSelectChange = (selectedRowKeys,selectedRows) => {
+        console.log(selectedRowKeys,selectedRows);
         this.setState({ 
             selectedRowKeys,
             selectedRows
@@ -75,7 +76,6 @@ class InfoCheck extends React.Component{
         // }
         this.setState({
             statics:value1,
-            // selectedRowKeys:trans2,
             checked:true
         })
     }
@@ -119,6 +119,21 @@ class InfoCheck extends React.Component{
         return;
         }
        
+    }
+    selectmore = () =>{
+        const { statics,selectedRows } = this.state;
+        if(statics.length===selectedRows.length){
+            this.onSelectChange([],[])
+        }else{
+            let index = []
+            let data = []
+            statics.map(item=>(
+                data.push(item),
+                index.push(item.key)
+            ))
+            this.onSelectChange(index,data)
+        }
+
     }
    componentDidMount(){
        if(!localStorage.token){

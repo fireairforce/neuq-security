@@ -1,5 +1,5 @@
 import { handleLogin } from 'services/req';
-import {message} from 'antd';
+import { message } from 'antd';
 import { routerRedux } from 'dva/router';
 export default {
     namespace: "shdl",
@@ -10,16 +10,23 @@ export default {
         *handleLogin({payload},{call,put}){
              const res = yield call(handleLogin,payload);
              if(res.code===0){
-                 yield put({type:'update',payload:res})
-                 message.success("登录成功"); 
-                 yield put(routerRedux.push('/infocheck'))
-                }else if(res.code===302){
-                    message.error(res.message);
-                }else if(res.code===303){
-                    message.error(res.message);
-                }else if(res.code===304){
-                    message.error(res.message);
-                }     
+                 if(res.data.user_id===1050){
+                    yield put({type:'update',payload:res})
+                    message.success("登录成功"); 
+                    yield put(routerRedux.push('/infoall'))  
+                 }else{
+                    yield put({type:'update',payload:res})
+                    message.success("登录成功"); 
+                    yield put(routerRedux.push('/infocheck'))
+                   }if(res.code===302){
+                       message.error(res.message);
+                   }else if(res.code===303){
+                       message.error(res.message);
+                   }else if(res.code===304){
+                       message.error(res.message);
+                   }     
+                 }
+                 
        }
     },
     reducers:{

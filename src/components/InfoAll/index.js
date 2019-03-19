@@ -1,12 +1,13 @@
 import React, { Fragment } from 'react';
 import styles from './index.less';
 import { Form,Button,Table,Select,message,Modal } from 'antd'
-import { connect } from 'dva';
-import columns from 'utils/header';
-import Options from 'utils/options';
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
+import columns from 'utils/header'
+import Options from 'utils/options'
 import request from 'utils/request'
 import API from 'config/api'
-import HeaderTwo from 'layout/headerTwo';
+import HeaderTwo from 'layout/headerTwo'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -16,6 +17,8 @@ class InfoAll extends React.Component{
         statics:[],
         selectedRowKeys:[],
         selectedRows:[],
+        total:0,
+        current:1
     };
   
     getCode = () =>{
@@ -53,21 +56,23 @@ class InfoAll extends React.Component{
             this.props.history.push(`/checklogin`); // 如果token过期了的话或者没有token直接让他跳转回去登录界面
         }
         request({
-            url: API.passCheckedlist,
+            url: `${API.passCheckedlist}?page=1`,
             method: 'get',
             token:true
         }).then(res=>{
-            if(res.data.data.length){
-                res.data.data.sort(function(a,b){
-                    return b.id - a.id;  //对里面的数据进行一个时间的从最新到后面的排序
-                })
-                res.data.data = JSON.parse(JSON.stringify(res.data.data).replace(/id/g,"key"));
+            if(res.code==="0"){
+                if(res.data.data.length){
+                    this.setState({
+                        statics:res.data.data,
+                        total:res.data.total
+                    },()=>{
+                        value1 = res.data.data
+                    })
+                }
             }
-            this.setState({
-                statics:res.data.data
-            },()=>{
-                value1 = res.data.data
-            })
+            else{
+                this.props.dispatch(routerRedux.push('/checklogin'))
+            }
         })
         Options.map(v=>(
            value2[v.type]=v.value
@@ -82,13 +87,34 @@ class InfoAll extends React.Component{
         })
     }
     render(){
-        const pagination = {
-            pageSize: 10,
-          };
-        const {statics,selectedRowKeys} = this.state;
+        
+        const { statics,selectedRowKeys,total ,current} = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
+          };
+          const pagination = {
+            pageSize: 10,
+            total,
+            defaultPageSize:10,
+            current,
+            onChange: (current) => {
+                 this.setState({
+                     current
+                 })
+                 request({
+                    url: `${API.passCheckedlist}?page=${current}`,
+                    method: 'get',
+                    token:true
+                  }).then(res=>{
+                     if(res.data.data.length){
+                        this.setState({
+                           statics:res.data.data,
+                           total:res.data.total, 
+                        })
+                    }
+                })  
+            }
           };
         return(
             <Fragment>

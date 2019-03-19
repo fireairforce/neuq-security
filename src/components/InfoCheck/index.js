@@ -141,20 +141,20 @@ class InfoCheck extends React.Component{
          this.props.history.push(`/checklogin`); 
        }
        request({
-        url: `${API.passedList}?page=1`, // 没有通过的数据请求
-        method: 'get',
-        token:true
-        }).then(res=>{
-            if(res.data.data.length){
-                res.data.data.map(item=>(
-                    value2.push(Object.assign({}, item ,{ flag:false }))
-                ))
-                this.setState({
-                   statics:res.data.data,
-                   total:res.data.total, 
-                })
-            }
-        })
+            url: `${API.passedList}?page=1`, // 没有通过的数据请求
+            method: 'get',
+            token:true
+            }).then(res=>{
+                if(res.data.data.length){
+                    res.data.data.map(item=>(
+                        value2.push(Object.assign({}, item ,{ flag:false }))
+                    ))
+                    this.setState({
+                    statics:res.data.data,
+                    total:res.data.total, 
+                    })
+                }
+            })
         request({
             url: `${API.passCheckedlist}?page=1`, // 通过审核的数据请求
             method: 'get',
@@ -232,7 +232,7 @@ class InfoCheck extends React.Component{
             <Fragment> 
                <div className={styles.wrapper}>
                     <HeaderTwo />
-                    <h1 className={styles.header2}>{`${school[localStorage.role]} 信息审核`}</h1>
+                    <h1 className={styles.header2}>{`${school[localStorage.role]}信息审核`}</h1>
                     <div className={styles.content2}>
                         <Form layout="inline">
                                 <div className={styles.content3}>

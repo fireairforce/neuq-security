@@ -29,6 +29,21 @@ class InfoCheck extends React.Component{
       }
    // 获取到那些没有通过审核的数据放在列表里面
     getFail = () =>{
+        request({
+            url: `${API.passedList}?page=1`, // 没有通过的数据请求
+            method: 'get',
+            token:true
+            }).then(res=>{
+                if(res.data.data.length){
+                    res.data.data.map(item=>(
+                        value2.push(Object.assign({}, item ,{ flag:false }))
+                    ))
+                    this.setState({
+                       statics:res.data.data,
+                       total:res.data.total, 
+                    })
+                }
+            })
           this.setState({
               selectedRowKeys:[],       
               statics:value2,
@@ -54,13 +69,13 @@ class InfoCheck extends React.Component{
                 }
             })
         // 注释部分用于对已通过的数据进行勾选
-        let trans2 = [];
-        for(var i in value1){
-            trans2[i]= value1[i].key;
-        }
+        // let trans2 = [];
+        // for(var i in value1){
+        //     trans2[i]= value1[i].key;
+        // }
         this.setState({
             statics:value1,
-            selectedRowKeys:trans2,
+            // selectedRowKeys:trans2,
             checked:true
         })
     }
@@ -125,6 +140,17 @@ class InfoCheck extends React.Component{
                 })
             }
         })
+        request({
+            url: `${API.passCheckedlist}?page=1`, // 通过审核的数据请求
+            method: 'get',
+            token:true
+            }).then(res=>{
+                if(res.data.data.length){
+                    res.data.data.map(item=>(
+                        value1.push(Object.assign({}, item ,{ flag:true }))
+                    ))
+                }
+            })
    
     }
     render(){ 

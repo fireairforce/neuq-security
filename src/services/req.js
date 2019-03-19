@@ -13,15 +13,15 @@ const handleLogin = (data) => request({
     data
 }) 
 // 获取未被审核的数据
-const getUnckeckedList = () =>request({
-    url:API.passedList,
+const getUnckeckedList = (params) =>request({
+    url: `${API.passedList}?page=${params}`,
     method:'get',
     token:true
 })
 
 // 获取被审核的数据
-const getCheckedList = () =>request({
-    url:API.passCheckedlist,
+const getCheckedList = (params) =>request({
+    url:`${API.passCheckedlist}?page=${params}`,
     method:'get',
     token:true
 })

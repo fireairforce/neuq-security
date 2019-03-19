@@ -16,10 +16,9 @@ class InfoCheck extends React.Component{
         selectedRowKeys:[],
         statics:[],
         selectedRows:[],
+        total:10,
         current:1,
-        pagestatics:[],      
-        page1:{},
-        page2:{}
+        checked:false // 表示一开始就显示信息没有审核的界面
     };
     // 数据的选择函数
     onSelectChange = (selectedRowKeys,selectedRows) => {
@@ -33,11 +32,27 @@ class InfoCheck extends React.Component{
           this.setState({
               selectedRowKeys:[],       
               statics:value2,
-              page:{}
+              checked:false,
            })        
     }
    // 获取那些通过审核的数据放在列表里面
     getPass = () =>{
+        // 获取已经通过审核的数据
+        request({
+            url: `${API.passCheckedlist}?page=1`,
+            method: 'get',
+            token:true
+            }).then(res=>{
+                if(res.data.data.length){
+                    res.data.data.map(item=>(
+                        value1.push(Object.assign({},item,{flag:true}))
+                    ))
+                    this.setState({
+                        statics:res.data.data,
+                        total:res.data.total
+                    })
+                }
+            })
         // 注释部分用于对已通过的数据进行勾选
         let trans2 = [];
         for(var i in value1){
@@ -45,7 +60,8 @@ class InfoCheck extends React.Component{
         }
         this.setState({
             statics:value1,
-            selectedRowKeys:trans2
+            selectedRowKeys:trans2,
+            checked:true
         })
     }
     cheched = (params) => {
@@ -57,8 +73,6 @@ class InfoCheck extends React.Component{
                 ids.push(item[i].key);
             }
             const pass = { ids }
-            // console.log(pass);
-            // console.log(item);
             if(params==='handlefailList'){
                　Modal.confirm({
                    title:'您确定要删除这些信息吗',
@@ -91,39 +105,13 @@ class InfoCheck extends React.Component{
         }
        
     }
-// //批量选择操作,可以考虑对这边的
-//    selectmore = () =>{
-//        const { current,statics } = this.state;         
-//        if(!statics.length){
-//         Modal.info({
-//             title:'提示',
-//             content:'当前数据列表为空,无法选择'
-//         })
-//        }else{
-//             let m = statics.length%10; // m是多的数据
-//             let n = Math.ceil(statics.length/10); // n是页数
-//             if( current == n ){
-//               for(let i = statics.length-1;i>=statics.length-m;i--){
-//                   index.push(statics[i].key)
-//                   data.push(statics[i]);
-//               }
-//             }else if(current<n){
-//                 for(let i =(current-1)*10;i<current*10;i++){
-//                     index.push(statics[i].key);
-//                     data.push(statics[i]);
-//                 }
-//             }
-//             this.onSelectChange(index,data);  
-//        }  
-//    }
-
    componentDidMount(){
        if(!localStorage.token){
          message.info('登录令牌已失效，请重新登录');
          this.props.history.push(`/checklogin`); 
        }
        request({
-        url: API.passedList, // 没有通过的数据请求
+        url: `${API.passedList}?page=1`, // 没有通过的数据请求
         method: 'get',
         token:true
         }).then(res=>{
@@ -131,35 +119,67 @@ class InfoCheck extends React.Component{
                 res.data.data.map(item=>(
                     value2.push(Object.assign({}, item ,{ flag:false }))
                 ))
-                const { current_page,first_page_url,from,last_page,last_page_url,next_page_url,per_page,prev_page_url,to,total } = res.data
                 this.setState({
-                   statics:[...this.state.statics,...res.data.data],
-                   page1:{...this.state.page1,current_page,first_page_url,from,last_page,last_page_url,next_page_url,per_page,prev_page_url,to,total }
+                   statics:res.data.data,
+                   total:res.data.total, 
                 })
             }
         })
-       request({
-        url: API.passCheckedlist,
-        method: 'get',
-        token:true
-        }).then(res=>{
-            if(res.data.data.length){
-                res.data.data.map(item=>(
-                    value1.push(Object.assign({},item,{flag:true}))
-                ))
-                // console.log(res.data)
-                const { current_page,first_page_url,from,last_page,last_page_url,next_page_url,per_page,prev_page_url,to,total } = res.data
-                this.setState({
-                    page2:{...this.state.page2,current_page,first_page_url,from,last_page,last_page_url,next_page_url,per_page,prev_page_url,to,total }
-                })
-            }
-        })
+   
     }
     render(){ 
         Options.map(v=>(
             school[v.role] = v.value
         ))
-        const { selectedRowKeys,statics } = this.state
+        const { selectedRowKeys,statics,total ,current,checked} = this.state
+        const pagination = {
+            pageSize:10,
+            total, 
+            defaultPageSize:10,
+            current,
+            onChange:(page)=>{
+                this.setState({
+                    current:page,
+                })
+                if(!checked){
+                    request({
+                        url: `${API.passedList}?page=${page}`,
+                        method: 'get',
+                        token:true
+                    }).then(res=>{
+                        if(res.data.data.length){
+                            res.data.data.map(item=>(
+                                value2.push(Object.assign({}, item ,{ flag:false }))
+                            ))
+                            this.setState({
+                               statics:res.data.data,
+                               total:res.data.total, 
+                            })
+                        }
+                    })    
+                }else{
+                    request({
+                        url: `${API.passCheckedlist}?page=${page}`,
+                        method: 'get',
+                        token:true
+                    }).then(res=>{
+                        if(res.data.data.length){
+                            res.data.data.map(item=>(
+                                value1.push(Object.assign({}, item ,{ flag:true }))
+                            ))
+                            this.setState({
+                               statics:res.data.data,
+                               total:res.data.total, 
+                            })
+                        }
+                    })    
+                }
+                                 
+            },
+            showTotal: function () {  //设置显示一共几条数据
+                return '共 ' + total + ' 条数据'; 
+            }
+        }
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -167,24 +187,6 @@ class InfoCheck extends React.Component{
                 disabled: record.flag
             }),
         }
-        console.log(this.state)
-        const pagination = {
-            pageSize:10,
-            total: 100, 
-            total:statics.length,
-            // pageSize:10,
-            // defaultPageSize:10,
-            // current:current,
-            // onChange:(page,pageSize)=>{
-            //     this.setState({
-            //         current:page,
-            //     })                        
-            // },
-            // showTotal: function () {  //设置显示一共几条数据
-            //     return '共 ' + statics.length + ' 条数据'; 
-            // }
-        }
-       
         return(
             <Fragment> 
                <div className={styles.wrapper}>

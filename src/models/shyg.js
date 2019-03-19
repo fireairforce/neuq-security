@@ -3,21 +3,30 @@ import { passExamin,passReject,getCheckedList,getUnckeckedList } from 'services/
 export default {
     namespace: "shyg",
     state:{
-        unCheckedList:{}, 
-        CheckedList:{}
+        unCheckedList:{
+            data:[],
+            total:0,
+            currentPage:1
+        }, 
+        CheckedList:{
+            data:[],
+            total:0,
+            currentPage:1,
+
+        }
     },
     effects:{
         * init({ payload },{ put }){
-           yield put({ type:'getCheckedList' })
-           yield put({ type:'getUnckeckedList' })
+           yield put({ type:'getCheckedList',payload })
+           yield put({ type:'getUnckeckedList',payload })
         },
         * getCheckedList ({ payload },{ call, put }) {
-             const res = yield call(getCheckedList)
+             const res = yield call(getCheckedList,payload)
              const pay = res.data
              yield put({type:'checkedlist',payload:pay})
         },
         * getUnckeckedList ({ payload },{ call,put }) {
-            const res = yield call(getUnckeckedList)
+            const res = yield call(getUnckeckedList,payload)
             const pay = res.data
             yield put({type:'uncheckedlist',payload:pay})
         },

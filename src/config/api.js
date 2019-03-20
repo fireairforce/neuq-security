@@ -15,5 +15,11 @@ export default {
     passSearch: 'pass/search',
 
     //获取二维码
-    getCode: 'pass/getQRcode/'
+    getCode: 'pass/getQRcode/',
+
+    // 获取已制证信息
+    getmadeCode:'pass/getmadepasses',
+
+    // 获取未制证的信息
+    getUnmadeCode:''
 }

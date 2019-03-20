@@ -10,21 +10,17 @@ export default {
         *handleLogin({payload},{call,put}){
              const res = yield call(handleLogin,payload);
              if(res.code===0){
-                 if(res.data.user_id===1050){
+                 if(res.data.user_id>1050){
                     yield put({type:'update',payload:res})
-                    message.success("登录成功"); 
+                    message.success(res.message); 
                     yield put(routerRedux.push('/infoall'))  
                  }else{
                     yield put({type:'update',payload:res})
-                    message.success("登录成功"); 
+                    message.success(res.message); 
                     yield put(routerRedux.push('/infocheck'))
-                   }if(res.code===302){
-                       message.error(res.message);
-                   }else if(res.code===303){
-                       message.error(res.message);
-                   }else if(res.code===304){
-                       message.error(res.message);
-                   }     
+                   }  
+                 }else{
+                     message.error(res.message)
                  }
                  
        }

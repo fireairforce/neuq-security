@@ -3,7 +3,7 @@ import styles from './index.less';
 import { Form,Button,Table,Select,message,Modal } from 'antd'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
-import columns from 'utils/header'
+import { Allcolumn } from 'utils/header'
 import Options from 'utils/options'
 import request from 'utils/request'
 import API from 'config/api'
@@ -18,7 +18,8 @@ class InfoAll extends React.Component{
         selectedRowKeys:[],
         selectedRows:[],
         total:0,
-        current:1
+        current:1,
+        done:'all'
     };
   
     getCode = () =>{
@@ -50,6 +51,24 @@ class InfoAll extends React.Component{
             })
         }
     }
+    getInfo = (type) => {
+        if(type==='done'){
+            request({
+                url:`${API.getmadeCode}?page=1`,
+                method:'get',
+                token:true,
+            }).then(res=>{
+                if(res.data.data.length){
+                   this.setState({
+                       statics:res.data.data,
+                       total:res.data.total,
+                       done:type
+                   })
+                }
+            })
+        }
+        
+    }
     componentDidMount(){
         if(!localStorage.token){
             message.info('登录令牌已失效，请重新登录');
@@ -80,15 +99,13 @@ class InfoAll extends React.Component{
     }
     // 对数据的选择函数
     onSelectChange = (selectedRowKeys,selectedRows) =>{
-        // console.log(selectedRowKeys,selectedRows);
         this.setState({ 
             selectedRowKeys,
             selectedRows
         })
     }
     render(){
-        
-        const { statics,selectedRowKeys,total ,current} = this.state;
+        const { statics,selectedRowKeys,total ,current,done} = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -102,18 +119,34 @@ class InfoAll extends React.Component{
                  this.setState({
                      current
                  })
-                 request({
-                    url: `${API.passCheckedlist}?page=${current}`,
-                    method: 'get',
-                    token:true
-                  }).then(res=>{
-                     if(res.data.data.length){
-                        this.setState({
-                           statics:res.data.data,
-                           total:res.data.total, 
-                        })
-                    }
-                })  
+                 if(done==='all'){
+                    request({
+                        url: `${API.passCheckedlist}?page=${current}`,
+                        method: 'get',
+                        token:true
+                      }).then(res=>{
+                         if(res.data.data.length){
+                            this.setState({
+                               statics:res.data.data,
+                               total:res.data.total, 
+                            })
+                        }
+                    })  
+                 }else if(done==='done'){
+                    request({
+                        url: `${API.getmadeCode}?page=${current}`,
+                        method: 'get',
+                        token:true
+                      }).then(res=>{
+                         if(res.data.data.length){
+                            this.setState({
+                               statics:res.data.data,
+                               total:res.data.total, 
+                            })
+                        }
+                    })  
+                 }
+                
             }
           };
         return(
@@ -140,7 +173,20 @@ class InfoAll extends React.Component{
                                            } 
                                         </Select>
                                 } 
-                            </FormItem>   
+                            </FormItem> 
+                            <FormItem>
+                                  {
+                                     <Select
+                                         style={{width:"160"}}
+                                         placeholder="未制证信息"
+                                         defaultValue="0"
+                                         isRequired="0"
+                                     >
+                                         <Option value="0" onClick={()=>{this.getInfo('undone')}}>未制证信息</Option>
+                                         <Option value="1" onClick={()=>{this.getInfo('done')}}>已制证信息</Option>
+                                     </Select>
+                                  }
+                            </FormItem>
                             </div>
                             <div className={styles.content4}>
                                 <Button onClick={this.getCode}>导出二维码</Button>
@@ -150,7 +196,7 @@ class InfoAll extends React.Component{
                     <div className={styles.content1}>
                       <Table 
                         bordered
-                        columns={columns}
+                        columns={Allcolumn}
                         dataSource={statics}
                         pagination={pagination}
                         rowSelection={rowSelection}

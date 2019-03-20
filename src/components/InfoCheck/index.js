@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import {connect} from 'dva'
 import styles from './index.less'
-import columns from 'utils/header'
+import { Checkcolumn } from 'utils/header'
 import request from 'utils/request'
 import API from 'config/api'
 import Options from 'utils/options'
@@ -11,14 +11,14 @@ const FormItem = Form.Item
 const Option = Select.Option
 let value1=[],value2=[],school=[]
 class InfoCheck extends React.Component{
-    // 把已经通过审核的数据搞的不能选择
     state={
         selectedRowKeys:[],
         statics:[],
         selectedRows:[],
         total:10,
         current:1,
-        checked:false // 表示一开始就显示信息没有审核的界面
+        // 表示一开始就显示信息没有审核的界面
+        checked:false 
     };
     // 数据的选择函数
     onSelectChange = (selectedRowKeys,selectedRows) => {
@@ -31,7 +31,7 @@ class InfoCheck extends React.Component{
    // 获取到那些没有通过审核的数据放在列表里面
     getFail = () =>{
         request({
-            url: `${API.passedList}?page=1`, // 没有通过的数据请求
+            url: `${API.passedList}?page=1`, 
             method: 'get',
             token:true
             }).then(res=>{
@@ -53,7 +53,6 @@ class InfoCheck extends React.Component{
     }
    // 获取那些通过审核的数据放在列表里面
     getPass = () =>{
-        // 获取已经通过审核的数据
         request({
             url: `${API.passCheckedlist}?page=1`,
             method: 'get',
@@ -69,11 +68,6 @@ class InfoCheck extends React.Component{
                     })
                 }
             })
-        // 注释部分用于对已通过的数据进行勾选
-        // let trans2 = [];
-        // for(var i in value1){
-        //     trans2[i]= value1[i].key;
-        // }
         this.setState({
             statics:value1,
             checked:true
@@ -237,18 +231,18 @@ class InfoCheck extends React.Component{
                         <Form layout="inline">
                                 <div className={styles.content3}>
                                    <Button onClick={this.selectmore}>批量审核</Button>
-                                   <FormItem>
-                                        {
-                                            <Select
-                                                style={{width:"160"}}
-                                                placeholder="未通过审核"
-                                                defaultValue="0"
-                                                isRequired="0"
-                                            >
-                                                <Option value="0" onClick={this.getFail}>未通过审核</Option>
-                                                <Option value="1" onClick={this.getPass}>已通过审核</Option>
-                                            </Select>
-                                        }
+                                    <FormItem>
+                                            {
+                                                <Select
+                                                    style={{width:"160"}}
+                                                    placeholder="未通过审核"
+                                                    defaultValue="0"
+                                                    isRequired="0"
+                                                >
+                                                    <Option value="0" onClick={this.getFail}>未通过审核</Option>
+                                                    <Option value="1" onClick={this.getPass}>已通过审核</Option>
+                                                </Select>
+                                            }
                                         </FormItem>
                                 </div>
                                 <div className={styles.content4}>
@@ -262,7 +256,7 @@ class InfoCheck extends React.Component{
                         <Table 
                             bordered
                             rowSelection={rowSelection}
-                            columns={columns}
+                            columns={Checkcolumn}
                             dataSource={statics}
                             pagination={pagination}
                             />

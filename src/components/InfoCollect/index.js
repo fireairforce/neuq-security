@@ -108,7 +108,11 @@ class InfoCollect extends React.Component{
                     key='carnumber'
                     >
                         {getFieldDecorator('cp', {
-                            rules: [{ required: true, message: '请输入车牌号!' }],
+                            rules: [{
+                                pattern:verity.carCard,message: '请输入符合规范的车牌号码'
+                            },
+                                { required: true, message: '请输入您的车牌号码' 
+                            }],
                         })(
                             <Input placeholder="请输入您的车牌号"  style={{width: '15vw'}}/>
                         )}

@@ -21,5 +21,5 @@ export default {
     getmadeCode:'pass/getmadepasses',
 
     // 获取未制证的信息
-    getUnmadeCode:''
+    getUnmadeCode:'pass/getunmadepasses'
 }

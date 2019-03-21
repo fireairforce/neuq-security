@@ -19,7 +19,7 @@ class InfoAll extends React.Component{
         selectedRows:[],
         total:0,
         current:1,
-        done:'all'
+        done:'undone'
     };
   
     getCode = () =>{
@@ -58,12 +58,36 @@ class InfoAll extends React.Component{
                 method:'get',
                 token:true,
             }).then(res=>{
-                if(res.data.data.length){
-                   this.setState({
-                       statics:res.data.data,
-                       total:res.data.total,
-                       done:type
-                   })
+                if(res.code==="0"){
+                    if(res.data.data.length){
+                    this.setState({
+                        statics:res.data.data,
+                        total:res.data.total,
+                        done:type
+                    })
+                    }
+                }else{
+                    message.error(res.message)
+                    this.props.dispatch(routerRedux.push('/checklogin'))
+                }
+            })
+        }else if(type==='undone'){
+            request({
+                url:`${API.getUnmadeCode}?page=1`,
+                method:'get',
+                token:true,
+            }).then(res=>{
+                if(res.code==='0'){
+                    if(res.data.data.length){
+                        this.setState({
+                            statics:res.data.data,
+                            total:res.data.total,
+                            done:type
+                        })
+                     }
+                }else{
+                    message.error(res.message)
+                    this.props.dispatch(routerRedux.push('/checklogin'))
                 }
             })
         }
@@ -71,11 +95,11 @@ class InfoAll extends React.Component{
     }
     componentDidMount(){
         if(!localStorage.token){
-            message.info('登录令牌已失效，请重新登录');
+            message.error('登录令牌已失效，请重新登录');
             this.props.history.push(`/checklogin`); // 如果token过期了的话或者没有token直接让他跳转回去登录界面
         }
         request({
-            url: `${API.passCheckedlist}?page=1`,
+            url: `${API.getUnmadeCode}?page=1`,
             method: 'get',
             token:true
         }).then(res=>{
@@ -90,6 +114,7 @@ class InfoAll extends React.Component{
                 }
             }
             else{
+                message.error(res.message);
                 this.props.dispatch(routerRedux.push('/checklogin'))
             }
         })
@@ -119,22 +144,28 @@ class InfoAll extends React.Component{
                  this.setState({
                      current
                  })
-                 if(done==='all'){
+                 if(done==='done'){
                     request({
-                        url: `${API.passCheckedlist}?page=${current}`,
+                        url: `${API.getmadeCode}?page=${current}`,
                         method: 'get',
                         token:true
                       }).then(res=>{
-                         if(res.data.data.length){
-                            this.setState({
-                               statics:res.data.data,
-                               total:res.data.total, 
-                            })
-                        }
+                          if(res.code==='0'){
+                            if(res.data.data.length){
+                                this.setState({
+                                   statics:res.data.data,
+                                   total:res.data.total, 
+                                })
+                            }
+                          }else{
+                            message.error(res.message);
+                            this.props.dispatch(routerRedux.push('/checklogin'))
+                          }
+                         
                     })  
-                 }else if(done==='done'){
+                 }else if(done==='undone'){
                     request({
-                        url: `${API.getmadeCode}?page=${current}`,
+                        url: `${API.getUnmadeCode}?page=${current}`,
                         method: 'get',
                         token:true
                       }).then(res=>{
@@ -207,5 +238,5 @@ class InfoAll extends React.Component{
         )
     }
 }
-export default connect(({ xxhz }) => ({ xxhz }))(InfoAll);
 
+export default connect(({ xxhz }) => ({ xxhz }))(InfoAll);

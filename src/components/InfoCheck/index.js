@@ -5,11 +5,12 @@ import { Checkcolumn } from 'utils/header'
 import request from 'utils/request'
 import API from 'config/api'
 import Options from 'utils/options'
-import { Form,Select,Button,Table,Modal,message } from 'antd'
+import { Form,Select,Button,Table,message,Modal } from 'antd'
 import HeaderTwo from 'layout/headerTwo'
 const FormItem = Form.Item
 const Option = Select.Option
 let value1=[],value2=[],school=[]
+ 
 class InfoCheck extends React.Component{
     state={
         selectedRowKeys:[],
@@ -18,11 +19,11 @@ class InfoCheck extends React.Component{
         total:10,
         current:1,
         // 表示一开始就显示信息没有审核的界面
-        checked:false 
+        checked:false, 
     };
     // 数据的选择函数
     onSelectChange = (selectedRowKeys,selectedRows) => {
-        console.log(selectedRowKeys,selectedRows);
+        // console.log(selectedRowKeys,selectedRows);
         this.setState({ 
             selectedRowKeys,
             selectedRows
@@ -74,25 +75,42 @@ class InfoCheck extends React.Component{
         })
     }
     cheched = (params) => {
-        let item = this.state.selectedRows;
-        const { dispatch } = this.props;
-        let ids = [];
-        if(item.length){
-            for(var i in item){
-                ids.push(item[i].key);
+        const { selectedRows } = this.state
+        const { dispatch } = this.props
+        const { checked } = this.state
+        let ids = [],name = []
+        if(selectedRows.length){
+            for(let i in selectedRows){
+                ids.push(selectedRows[i].key)
+                name.push(selectedRows[i].name)
             }
+            let names = name.join('和')
             const pass = { ids }
             if(params==='handlefailList'){
-               　Modal.confirm({
-                   title:'您确定要删除这些信息吗',
-                   content:'一旦删除便不可修改',
-                   onOk(){
-                    dispatch({
-                        type:`shyg/${params}`,
-                        payload:pass
-                    })
-                  }
-                })
+                if(!checked){
+                    Modal.confirm({
+                        title:'您确定要拒绝这些申请吗',
+                        content:'一旦拒绝便不可修改',
+                        onOk(){
+                         dispatch({
+                             type:`shyg/${params}`,
+                             payload:pass
+                         })
+                       }
+                     })
+                }else{
+                    Modal.confirm({
+                        title:`即将重新拒绝${names}的申请`,
+                        content:'一旦拒绝便不可修改',
+                        onOk(){
+                         dispatch({
+                             type:`shyg/${params}`,
+                             payload:pass
+                         })
+                       }
+                     })
+                }
+               　
             }else{
                 　Modal.confirm({
                     title:'您确定通过这些信息吗',
@@ -245,10 +263,19 @@ class InfoCheck extends React.Component{
                                             }
                                         </FormItem>
                                 </div>
-                                <div className={styles.content4}>
-                                    <Button onClick={()=>{this.cheched('handlepassList')}} type="primary" style={{backgroundColor:'#99CC66',borderColor:'#d9d9d9'}}>确认通过</Button>
-                                    <Button onClick={()=>{this.cheched('handlefailList')}} type="danger">拒绝申请</Button>
-                                </div>
+                                {
+                                    checked?(
+                                         <div className={styles.content4}>
+                                          <Button onClick={()=>{this.cheched('handlefailList')}} type="danger">重新拒绝</Button>
+                                        </div>
+                                    ):(
+                                        <div className={styles.content4}>
+                                          <Button onClick={()=>{this.cheched('handlepassList')}} type="primary" style={{backgroundColor:'#99CC66',borderColor:'#d9d9d9'}}>确认通过</Button>
+                                          <Button onClick={()=>{this.cheched('handlefailList')}} type="danger">拒绝申请</Button>
+                                        </div>
+                                    )
+                                }
+                                
                             </Form> 
                         </div>
                         <div className={styles.clear}></div>

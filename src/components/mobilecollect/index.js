@@ -7,6 +7,7 @@ import styles from './index.less'
 import axios from 'axios'
 const FormItem = Form.Item
 
+
 class Collect extends Component {
   constructor (props) {
     super(props)

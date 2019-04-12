@@ -1,18 +1,10 @@
-
-const webpack = require('webpack')
 const QiniuPlugin = require('qiniu-webpack-plugin')
 const config = require('./secret')
-const path = require('path')
+
 module.exports = function (webpackConfig, env) {
-  if (env !== 'production') {} else { 
+  // console.log(process.env);
+  if(process.env.NODE_ENV==='production'){
     webpackConfig.plugins.push(
-      new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          warnings: false,
-          drop_debugger: true,
-          drop_console: true
-        }
-      }),
       new QiniuPlugin({
         ACCESS_KEY: config.ACCESS_KEY,
         SECRET_KEY: config.SECRET_KEY,
@@ -21,6 +13,5 @@ module.exports = function (webpackConfig, env) {
       })
     )
   }
-
   return webpackConfig
 }

@@ -1,3 +1,7 @@
+## 介绍
+该项目为东北大学安保处管理车辆信息用。
+线上地址：http://neuq_security.zoomdong.xin/
+
 ## 使用
 路由/checklogin为登录页面
 
